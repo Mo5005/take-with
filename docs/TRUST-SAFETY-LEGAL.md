@@ -47,14 +47,14 @@ So the app must never encourage blind carrying. The rule that shapes the whole p
 - Over-the-counter medicine in original packaging
 - Packaged, non-perishable food, where the destination allows it
 
-The list must be maintained **per corridor**, because import rules differ per destination country.
+Import rules differ per destination country. Because routes are anywhere → anywhere, the app shows one general list plus a clear notice: "Check the customs rules of your destination and transit countries." Whether this is enough needs legal check.
 
 ## 4. Legal topics to resolve
 
 1. **Platform role.** We connect users; we are not a carrier, courier or party to the agreement. Terms must say so clearly, and the product must behave that way.
-2. **Customs & import rules** for each destination — duties, allowances, forbidden goods.
-3. **Sanctions and export control.** Rules for Syria have been changing; check the current EU/German position before launch and again regularly. Do not assume.
-4. **Paid carrying.** A traveller who regularly carries for money may be acting commercially (tax, trade registration, airline conditions of carriage). Cost-sharing framing ("contribution to ticket cost") is safer than "earnings" — needs legal confirmation.
+2. **Customs & import rules** differ for each destination — duties, allowances, forbidden goods. With open routes the user must check them; the app must say so.
+3. **Sanctions and export control.** Some destinations are under sanctions, and the rules change (for example for Syria). Check the current EU/German position before launch and again regularly. Do not assume.
+4. **Paid carrying.** Not allowed at launch: the app is free only. A traveller who regularly carries for money may be acting commercially (tax, trade registration, airline conditions of carriage) — needs legal check before paid offers are ever added.
 5. **Airline conditions.** Many airlines forbid carrying items for third parties. Users must be told honestly.
 6. **GDPR.** We are based in Germany: privacy policy, legal basis for each data use, data minimisation, deletion and export of account data, EU hosting, processor agreements. ID documents (if we add verification) should stay with the verification provider — we store only the result.
 7. **EU Digital Services Act.** Reporting channel for illegal content, statement of reasons on moderation, contact point, transparent terms. Lighter duties for small platforms but not zero.
@@ -67,7 +67,7 @@ The list must be maintained **per corridor**, because import rules differ per de
 |---|---|---|
 | 0 Guest | none | Browse listings |
 | 1 Member | email + verified phone | Post, message |
-| 2 Verified | ID check (v2) | Badge, higher ranking, paid deals later |
+| 2 Verified | ID check (v2) | Badge, higher ranking |
 | 3 Trusted | 3+ completed deals, rating ≥ 4.5, no upheld reports | "Trusted" badge |
 
 ## 6. Moderation

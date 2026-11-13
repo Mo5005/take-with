@@ -25,16 +25,15 @@ One table for both sides, separated by `kind`.
 | `date_flex_days` | optional | optional |
 | `weight_kg` | free capacity | item weight |
 | `item_types[]` | accepted types | type of the item |
-| `price_type` | `free` \| `per_kg` \| `fixed` \| `negotiable` | same (as reward) |
-| `price_amount`, `currency` | ✔ | ✔ |
 | `description`, `photos[]` | optional | photo required |
 | `status` | `active` \| `full` \| `expired` \| `closed` \| `removed` | same |
 
+Listings have no price: version 1 is free only.
 Listings expire automatically after their date.
 
 ### Place
 `id, name (ar/de/en), country_code, lat, lng, type (city|airport), iata_code?`
-Curated list at first (cities/airports on the launch corridors) — gives clean filters and a clean map, and keeps exact addresses out of the system.
+World-wide list of cities and airports loaded from open data (routes are anywhere → anywhere). The user picks a place from this list — this gives clean filters and a clean map, and keeps exact addresses out of the system.
 
 ### Item types (enum)
 `documents, clothes, gifts, electronics, medicine_otc, food, books, other`
@@ -46,7 +45,7 @@ One conversation per (listing, interested user).
 
 ### Deal
 Created when both sides agree in a conversation.
-`id, listing_id, traveller_id, sender_id, agreed_weight_kg, agreed_price, status, inspected_confirmed_at, delivered_confirmed_at`
+`id, listing_id, traveller_id, sender_id, agreed_weight_kg, status, inspected_confirmed_at, delivered_confirmed_at`
 
 ```
 proposed ──> accepted ──> handed_over ──> delivered ──> (reviews)
@@ -72,7 +71,6 @@ proposed ──> accepted ──> handed_over ──> delivered ──> (reviews
 - date range
 - minimum weight
 - item type
-- free only / max price
 - verified authors only
 - sort: date (default), newest, rating
 

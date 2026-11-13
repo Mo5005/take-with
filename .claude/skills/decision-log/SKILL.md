@@ -1,6 +1,6 @@
 ---
 name: decision-log
-description: Record a product or technical decision, or an open question, in docs/DECISIONS.md. Use whenever the user decides something about TakeWith ("let's go with…", "we will not…", "I decided…"), answers an open question, or raises a question that cannot be answered now.
+description: Record a product or technical decision, or an open question, in docs/DECISIONS.md. Use whenever the user decides something about Take With ("let's go with…", "we will not…", "I decided…"), answers an open question, or raises a question that cannot be answered now.
 ---
 
 # Decision log

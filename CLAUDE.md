@@ -1,8 +1,8 @@
-# TakeWith
+# Take With
 
-Peer-to-peer app: travellers with free luggage space carry items for people on the same route. Founder is based in Germany; first corridor is Germany ↔ Syria.
+Peer-to-peer app: travellers with free luggage space carry items for people on the same route. Founder is based in Germany. Routes are anywhere → anywhere. App ID: `com.dumo.takewith`.
 
-**Phase: concept. There is no application code yet.** Do not scaffold an app until the tech stack in `docs/DECISIONS.md` moves from "Proposed" to "Decided".
+**Phase: concept is final; the build has not started.** Build the web app first (Expo with web output + Supabase, see `docs/ARCHITECTURE.md`). The founder tests on a phone, so every screen must work at phone width.
 
 ## Read first
 
@@ -16,13 +16,12 @@ Peer-to-peer app: travellers with free luggage space carry items for people on t
 - **Trip**: a traveller's offer of free capacity. **Request**: a sender's need. Both are **listings**.
 - **Traveller** carries; **sender** hands over; **receiver** collects at the destination.
 - **Deal**: an agreed match between one traveller and one sender.
-- **Corridor**: a pair of regions we actively serve (e.g. Germany ↔ Syria).
 
 ## Product rules that must never be broken
 
 1. **Open-item rule.** A deal cannot become `handed_over` without the traveller's inspection confirmation. Never design a flow for sealed packages.
 2. **No public precise location.** Only city/airport level is public. No home addresses, flight numbers or exact times in listings.
-3. **No money handling in the MVP.** No payment, wallet or escrow features until decided in DECISIONS.md.
+3. **Free only.** Listings have no price. No payment, wallet or escrow features until decided in DECISIONS.md.
 4. **Phone verification** before posting or messaging.
 5. **Three languages always**: every user-facing string exists in `ar`, `de`, `en`; layouts must work right-to-left.
 6. **Reviews only from completed deals.**

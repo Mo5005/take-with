@@ -1,29 +1,28 @@
 # Roadmap
 
-## Phase 0 — Validate (before writing code)
-- Talk to 15–20 people who send or carry items Germany ↔ Syria today.
-- Observe 3–4 Facebook/WhatsApp groups: how many posts per week, which routes, which items, what goes wrong.
-- Landing page with waiting list in Arabic and German.
-- Decide launch corridor (proposal: Germany ↔ Syria, including flights via Beirut, Amman, Istanbul).
-- **Exit:** 100+ sign-ups or clear evidence of weekly demand on the corridor.
-
-## Phase 1 — MVP build
-- Auth, profile, phone verification
+## Phase 1 — Test version (web app, founder tests on phone)
+- Project setup: Expo with web output, Supabase, three languages
+- Login and profile
 - Trips and requests: create, list, detail, filters
 - Map view
 - Chat
 - Deal flow with inspection confirmation
 - Ratings, report & block
-- Safety centre, terms, privacy policy (legally reviewed)
-- Arabic / German / English
+- Safety centre
 
 ## Phase 2 — Closed beta
-- 50–100 invited users from the community, one corridor.
+- 50–100 invited users from one community (proposal: Germany ↔ Syria).
+- Phone verification by SMS.
+- Terms, privacy policy and imprint, legally reviewed.
 - Measure match rate and completed deals; fix what blocks deals.
 
 ## Phase 3 — Public launch
-- App Store / Play Store release.
+- Public web app; iOS and Android apps (`com.dumo.takewith`) from the same code.
 - Route alerts, share-to-WhatsApp, receiver link, ID verification.
 
 ## Phase 4 — Grow and earn
-- More corridors, in-app payment with escrow, service fee, insurance.
+- Paid offers, in-app payment with escrow, service fee, insurance — each needs a new decision and a legal check.
+
+## In parallel — validate demand
+- Talk to people who send or carry items today.
+- Watch the Facebook/WhatsApp groups: which routes, which items, what goes wrong.

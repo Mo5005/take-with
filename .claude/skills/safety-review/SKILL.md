@@ -1,6 +1,6 @@
 ---
 name: safety-review
-description: Review a TakeWith feature, spec, screen or code change against the app's trust, safety, privacy and legal rules. Use before a feature spec is accepted, before merging anything that touches listings, chat, deals, profiles, location or personal data, or when the user asks "is this safe" or "is this allowed".
+description: Review a Take With feature, spec, screen or code change against the app's trust, safety, privacy and legal rules. Use before a feature spec is accepted, before merging anything that touches listings, chat, deals, profiles, location or personal data, or when the user asks "is this safe" or "is this allowed".
 ---
 
 # Safety review
@@ -16,10 +16,10 @@ Read `docs/TRUST-SAFETY-LEGAL.md` and the product rules in `CLAUDE.md`, then che
 5. **Verification gates** — is phone verification still required before posting and messaging?
 6. **Reputation integrity** — can ratings be created without a completed deal, or by the same person on both sides?
 7. **Abuse** — spam, fake listings, harassment in chat: is report and block reachable from every new surface?
-8. **Money** — does it introduce payments, stored balances or fees? (Not allowed in the MVP.)
+8. **Money** — does it introduce prices, payments, stored balances or fees? (Not allowed: the app is free only.)
 9. **Personal data (GDPR)** — which new data is collected, why, how long is it kept, is it deleted with the account, does it leave the EU?
 10. **Access control** — can a user read or change another user's listings, chats or deals? Is this enforced on the server, not only in the app?
-11. **Wording** — does any text promise safety, insurance, legality or guaranteed delivery that the platform cannot guarantee? Does it call payment "earnings" rather than cost-sharing?
+11. **Wording** — does any text promise safety, insurance, legality or guaranteed delivery that the platform cannot guarantee?
 12. **Languages** — are all new strings present in `ar`, `de`, `en` and does the layout work right-to-left?
 
 Finish with:

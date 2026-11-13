@@ -1,6 +1,6 @@
 ---
 name: feature-spec
-description: Turn a feature idea for the TakeWith app into a short written spec. Use when the user proposes a new feature, asks "how should X work", or before implementing any feature that has no spec in docs/features/.
+description: Turn a feature idea for the Take With app into a short written spec. Use when the user proposes a new feature, asks "how should X work", or before implementing any feature that has no spec in docs/features/.
 ---
 
 # Feature spec

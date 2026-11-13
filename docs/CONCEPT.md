@@ -6,13 +6,13 @@ Travellers post the luggage space they have free on a trip; people who need some
 
 Example: Mo flies Bremen → Damascus on 12 December with 2 kg free. Layla in Bremen wants to send documents to her family in Damascus. She finds Mo's trip, messages him, they meet, Mo checks the item and carries it.
 
-This model is known as **crowdshipping** / peer-to-peer delivery. It works best on **diaspora routes** where normal shipping is slow, expensive or unreliable — which is exactly the Germany ↔ Syria case.
+This model is known as **crowdshipping** / peer-to-peer delivery. It works best on **diaspora routes** where normal shipping is slow, expensive or unreliable — for example Germany ↔ Syria. The app itself accepts **any route, anywhere → anywhere**.
 
 ## 2. Why it can work
 
 - **Real pain:** shipping to Syria is costly and slow; people already solve this through Facebook and WhatsApp groups ("anyone flying to Damascus next week?").
 - **Existing behaviour:** we are not inventing a habit, we are giving a messy one a better tool: searchable, filterable, with profiles and ratings instead of an endless group chat.
-- **Dense community:** a tight community on a few routes solves the cold-start problem better than a global launch.
+- **Dense community:** the app is open to every route, but it only feels alive where many people post. Marketing should start with one community.
 
 **Main competitor is not another app — it is the Facebook/WhatsApp group.** We win only if posting and finding is faster there and trust is visibly higher.
 
@@ -20,8 +20,8 @@ This model is known as **crowdshipping** / peer-to-peer delivery. It works best 
 
 | Role | Wants | Fears |
 |---|---|---|
-| **Traveller** (carrier) | Help people, maybe offset ticket cost | Carrying something illegal, customs trouble, no-shows |
-| **Sender** | Cheap, fast, personal delivery | Item lost, stolen, or never delivered |
+| **Traveller** (carrier) | Help people from their community | Carrying something illegal, customs trouble, no-shows |
+| **Sender** | Fast, personal delivery | Item lost, stolen, or never delivered |
 | **Receiver** (often not an app user) | Pick up easily | Not knowing when/where |
 
 One account can be both traveller and sender. No separate account types.
@@ -41,13 +41,13 @@ Both appear in the same list/map, with a toggle. A traveller can answer a reques
 
 | # | Feature | Notes |
 |---|---|---|
-| 1 | **Sign up / login** | Email + Google/Apple. Phone number verified by SMS (required before posting or messaging). |
+| 1 | **Sign up / login** | Email + Google/Apple. Phone number verified by SMS (required before posting or messaging; see open question 5 in DECISIONS for the test version). |
 | 2 | **Profile** | Name, photo, languages, short bio, verification badges, rating, completed deliveries. |
-| 3 | **Post a trip** | From, to, date, free weight (kg), accepted item types, price (free / per kg / fixed), description, handover area. |
-| 4 | **Post a request** | From, to, latest delivery date, item type, weight, description, photo, reward offered. |
-| 5 | **Browse list** | Sorted by date. Card shows route, date, kg, price, author rating. |
+| 3 | **Post a trip** | From, to, date, free weight (kg), accepted item types, description, handover area. |
+| 4 | **Post a request** | From, to, latest delivery date, item type, weight, description, photo. |
+| 5 | **Browse list** | Sorted by date. Card shows route, date, kg, item types, author rating. |
 | 6 | **Map view** | Routes drawn as arcs between cities; tap a city to see listings from/to it. |
-| 7 | **Filters** | From, to (with radius / "nearby airports"), date range, min. weight, item type, free vs. paid, verified users only. |
+| 7 | **Filters** | From, to (with radius / "nearby airports"), date range, min. weight, item type, verified users only. |
 | 8 | **In-app chat** | Contact the author without exposing phone number. Text + photos. |
 | 9 | **Deal flow** | Request → accepted → handed over → delivered → rated. See DATA-MODEL. |
 | 10 | **Ratings & reviews** | Both sides, only after a completed deal. |
@@ -67,24 +67,23 @@ Both appear in the same list/map, with a toggle. A traveller can answer a reques
 
 ### Later
 
-- In-app payment with escrow (released on delivery confirmation).
+- Paid offers, and in-app payment with escrow (released on delivery confirmation).
 - Optional item insurance.
-- More corridors (Germany ↔ Lebanon, Türkiye, Iraq, Egypt, Jordan …).
 - Shopping requests ("buy X in Germany and bring it").
 - Other transport: car, bus.
 
 ### Deliberately not in the MVP
 
-- **Payments.** Money is agreed and exchanged between users directly. Handling money makes us a payment/commercial operator with far more regulation. First prove people use it.
-- **Price recommendations, insurance, logistics partners.**
+- **Prices and payments.** Version 1 is free only: carrying is a favour, listings have no price. Paid carrying and handling money bring far more regulation. First prove people use it.
+- **Insurance, logistics partners.**
 
 ## 6. Key screens
 
 1. Onboarding (language, safety rules in 3 screens, login)
 2. Home: search bar (from / to / date) + list ⇄ map toggle + trips ⇄ requests toggle
 3. Filter sheet
-4. Listing detail (route, date, capacity, price, author card, "Message" button)
-5. Create listing (short stepper: route → date → capacity/item → price → review)
+4. Listing detail (route, date, capacity, author card, "Message" button)
+5. Create listing (short stepper: route → date → capacity/item → review)
 6. Chat list and chat thread (with deal status banner and action buttons)
 7. My listings / my deals
 8. Profile and verification
@@ -92,7 +91,7 @@ Both appear in the same list/map, with a toggle. A traveller can answer a reques
 
 ## 7. Business model
 
-Free at launch — growth and trust matter more than revenue. Later options, in order of fit:
+Free at launch — growth and trust matter more than revenue. Options for later, in order of fit (each needs a new decision):
 
 1. **Service fee on paid deals** once in-app payment exists (e.g. 10 %). Free deals stay free.
 2. **Verification / boost** — paid highlighted listing or fast-track ID badge.
@@ -114,7 +113,7 @@ Avoid advertising: it damages trust in a product where trust is the product.
 | Risk | Mitigation |
 |---|---|
 | Illegal or dangerous items carried | Safety layer, inspection rule, prohibited list, verification — see TRUST-SAFETY-LEGAL |
-| Cold start (empty app) | Launch on **one corridor**, seed from existing community groups, allow requests as well as trips |
+| Cold start (empty app) | App is open to all routes, but marketing starts with **one community**; seed from existing groups; allow requests as well as trips |
 | Users move to WhatsApp after first contact | Accept it early; give reasons to return: ratings, deal history, alerts |
 | Legal exposure of the platform | Clear terms: platform only connects people; legal review before public launch |
 | Scams / theft | Phone verification, ratings, report & block, later ID check and escrow |
