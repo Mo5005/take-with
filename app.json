@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Take With",
+    "slug": "take-with",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dumo.takewith"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.dumo.takewith"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/favicon.png",
+      "name": "Take With",
+      "shortName": "Take With",
+      "themeColor": "#0F6E64",
+      "backgroundColor": "#F6F4EF",
+      "display": "standalone"
+    },
+    "scheme": "takewith",
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "baseUrl": "/take-with"
+    }
+  }
+}

@@ -1,4 +1,12 @@
-# Data Model (draft)
+# Data Model
+
+The real tables are defined in `supabase/schema.sql` — that file is the source of truth. This page explains the ideas.
+
+Differences in the test version:
+- There is no `Place` table. A listing stores the city name, country code and coordinates itself; cities come from the list bundled in the app.
+- A conversation has a `starter` (the interested user) and an `owner` (the listing author).
+- Reports can target a user, a listing or a conversation.
+- No photos, no ID verification, no `disputed` status yet. Capacity of a trip is not reduced automatically.
 
 ## Entities
 

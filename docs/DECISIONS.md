@@ -7,6 +7,9 @@ Add an entry whenever something is decided or a question is answered — newest 
 
 | Date | Decision | Why |
 |---|---|---|
+| 2026-11-13 | Test version login: **Google** (plus email login link as a fallback). No SMS phone check yet | Founder's decision; SMS costs money. SMS verification comes before public launch |
+| 2026-11-13 | Hosting: **GitHub Pages**, https://mo5005.github.io/take-with/ | Founder's decision; free |
+| 2026-11-13 | Cities come from a **list inside the app** (about 8,800 cities: over 50,000 people, plus capitals). Search area uses simple distance maths, not PostGIS yet | No setup needed for the test version; PostGIS can come when there is much data |
 | 2026-11-13 | **Free only** at launch: listings have no price field | Founder's decision; also simpler legally than paid carrying |
 | 2026-11-13 | Routes are **anywhere → anywhere**, no corridor limit | Founder's decision |
 | 2026-11-13 | **Web app first** (installable, mobile-first), native apps later from the same code | Founder tests on a phone; a web link needs no app store |
@@ -25,10 +28,14 @@ Add an entry whenever something is decided or a question is answered — newest 
 - Users must be 18+.
 - Marketing still starts with one community (Germany ↔ Syria), even though the app accepts every route. An app open to the world is empty everywhere unless one community fills it first.
 
+## Not in the test version yet
+
+Photos (listing and chat), notifications, unread badges, airports in the place list, delivery code for the receiver, export of own data, imprint and privacy policy, moderation screen (reports are read in the Supabase dashboard).
+
 ## Open questions
 
 1. Is a legal entity planned (e.g. UG) before public launch? Needed for imprint, terms and liability.
 2. Electronics: allowed, restricted or forbidden at launch?
 3. Sanctions, export-control and customs rules differ per country. With open routes we cannot keep a list per destination. Is a general forbidden list plus "check the rules of your destination" enough? — needs legal check.
-4. Where is the web app hosted, and under which domain?
-5. Phone verification by SMS costs money per message. Start with email verification for the test version and add SMS before public launch?
+4. Own domain for the public launch?
+5. Arabic and German city names exist only for about 80 large cities. Where do we get the rest?

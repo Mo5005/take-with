@@ -1,14 +1,16 @@
 # Roadmap
 
-## Phase 1 — Test version (web app, founder tests on phone)
-- Project setup: Expo with web output, Supabase, three languages
-- Login and profile
+## Phase 1 — Test version (web app, founder tests on phone) — built
+- Login (Google, email link) and profile
 - Trips and requests: create, list, detail, filters
 - Map view
-- Chat
-- Deal flow with inspection confirmation
-- Ratings, report & block
-- Safety centre
+- Chat with live updates
+- Deal steps with inspection confirmation
+- Ratings, report & block, account deletion
+- Safety rules and safety centre
+- Arabic, German, English
+
+Still open in this phase: photos, notifications, unread badges, airports.
 
 ## Phase 2 — Closed beta
 - 50–100 invited users from one community (proposal: Germany ↔ Syria).

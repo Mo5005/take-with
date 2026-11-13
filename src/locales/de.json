@@ -1,0 +1,119 @@
+{
+  "app": { "name": "Take With", "tagline": "Freier Platz im Gepäck trifft Dinge, die reisen müssen." },
+  "tabs": { "browse": "Suchen", "post": "Inserieren", "chats": "Chats", "profile": "Profil" },
+  "common": {
+    "back": "Zurück", "save": "Speichern", "saved": "Gespeichert", "cancel": "Abbrechen", "send": "Senden", "loading": "Lädt…",
+    "retry": "Erneut versuchen", "close": "Schließen", "clear": "Löschen", "any": "Alle", "kg": "kg", "optional": "optional",
+    "notFound": "Nicht gefunden", "confirm": "Bist du sicher?"
+  },
+  "kind": {
+    "trip": "Reise", "request": "Anfrage", "trips": "Reisen", "requests": "Anfragen",
+    "tripHint": "Ich reise und habe Platz frei", "requestHint": "Ich möchte etwas mitgeben"
+  },
+  "items": {
+    "documents": "Dokumente", "clothes": "Kleidung", "gifts": "Geschenke", "electronics": "Elektronik",
+    "medicine_otc": "Medikamente (rezeptfrei)", "food": "Verpackte Lebensmittel", "books": "Bücher", "other": "Sonstiges"
+  },
+  "browse": {
+    "from": "Von", "to": "Nach", "anywhere": "Überall", "filters": "Filter", "list": "Liste", "map": "Karte",
+    "dateFrom": "Ab Datum", "dateTo": "Bis Datum", "minKg": "Mindestens kg frei", "maxKg": "Höchstens kg",
+    "itemType": "Art des Gegenstands", "radius": "Suchgebiet", "radiusCity": "Nur Stadt", "radiusKm": "+ {{km}} km",
+    "reset": "Filter zurücksetzen", "results_one": "{{count}} Ergebnis", "results_other": "{{count}} Ergebnisse",
+    "emptyTitle": "Noch nichts hier", "emptyTrip": "Keine passende Reise. Stelle eine Anfrage ein, damit Reisende dich finden.",
+    "emptyRequest": "Keine passende Anfrage. Stelle deine Reise ein, damit Absender dich finden.",
+    "postRequest": "Anfrage einstellen", "postTrip": "Reise einstellen",
+    "mapHint": "Tippe auf eine Linie, um die Inserate dieser Strecke zu sehen.", "mapEmpty": "Keine Strecken vorhanden.",
+    "mapNative": "Die Karte gibt es in der Web-App."
+  },
+  "place": { "search": "Stadt suchen", "hint": "Mindestens 2 Buchstaben eingeben", "none": "Keine Stadt gefunden" },
+  "listing": {
+    "freeKg": "{{kg}} kg frei", "needKg": "{{kg}} kg zu senden", "flex": "± {{days}} Tage",
+    "travelDate": "Reisedatum", "latestDate": "Lieferung bis", "accepts": "Nimmt mit", "item": "Gegenstand",
+    "description": "Beschreibung", "noDescription": "Keine Beschreibung.", "author": "Eingestellt von",
+    "message": "Nachricht senden", "openChat": "Chat öffnen", "report": "Melden", "yours": "Das ist dein Inserat",
+    "closeIt": "Inserat schließen", "reopen": "Inserat wieder öffnen", "delete": "Inserat löschen",
+    "closed": "Geschlossen", "expired": "Abgelaufen", "freeNote": "Take With ist kostenlos. Mitnehmen ist ein Gefallen – ohne Bezahlung.",
+    "loginToMessage": "Anmelden, um eine Nachricht zu senden"
+  },
+  "post": {
+    "title": "Neues Inserat", "what": "Was möchtest du einstellen?", "route": "Strecke", "date": "Datum",
+    "flex": "Flexibel um (Tage)", "weightTrip": "Freies Gewicht (kg)", "weightRequest": "Gewicht des Gegenstands (kg)",
+    "typesTrip": "Was kannst du mitnehmen?", "typesRequest": "Was ist der Gegenstand?",
+    "descTrip": "Details (wo du dich treffen kannst, was du bevorzugst)", "descRequest": "Beschreibe den Gegenstand genau",
+    "privacy": "Schreibe hier keine Adresse, Flugnummer oder Telefonnummer. Teile sie im Chat, wenn du möchtest.",
+    "submit": "Veröffentlichen", "done": "Veröffentlicht",
+    "errPlaces": "Wähle Start und Ziel.", "errSame": "Start und Ziel müssen verschieden sein.",
+    "errDate": "Wähle ein Datum, das nicht in der Vergangenheit liegt.", "errWeight": "Gib ein Gewicht zwischen 0,1 und 100 kg ein.",
+    "errTypes": "Wähle mindestens eine Art.", "errDesc": "Beschreibe den Gegenstand (mindestens 10 Buchstaben)."
+  },
+  "chats": { "title": "Chats", "empty": "Noch keine Chats. Öffne ein Inserat und sende eine Nachricht.", "noMessages": "Noch keine Nachrichten" },
+  "chat": {
+    "placeholder": "Nachricht schreiben", "listing": "Inserat ansehen", "blocked": "Du kannst diesem Nutzer nicht schreiben.",
+    "safetyTip": "Nimm nie ein verschlossenes Paket mit. Trefft euch an einem öffentlichen Ort.", "you": "Du"
+  },
+  "deal": {
+    "title": "Vereinbarung", "propose": "Vereinbarung vorschlagen", "proposeHint": "Einigt euch auf das Gewicht und bestätigt dann jeden Schritt hier.",
+    "weight": "Gewicht (kg)", "sendProposal": "Vorschlag senden",
+    "status_proposed": "Vorgeschlagen", "status_accepted": "Angenommen", "status_handed_over": "Übergeben",
+    "status_delivered": "Zugestellt", "status_cancelled": "Abgebrochen",
+    "youTraveller": "Du nimmst den Gegenstand mit", "youSender": "Du gibst den Gegenstand mit",
+    "waitingAccept": "Warten, bis die andere Person annimmt.", "accept": "Annehmen", "decline": "Ablehnen",
+    "cancel": "Vereinbarung abbrechen", "senderAccepted": "Übergib den Gegenstand an einem öffentlichen Ort. Der Reisende prüft ihn.",
+    "inspect": "Ich habe den Gegenstand selbst geöffnet und geprüft. Er entspricht der Beschreibung und ist nicht verschlossen.",
+    "received": "Ich habe den Gegenstand erhalten", "notAsDescribed": "Nicht wie beschrieben – abbrechen",
+    "waitingDelivery": "Warten, bis der Absender die Zustellung bestätigt.",
+    "confirmDelivered": "Der Gegenstand ist angekommen – Zustellung bestätigen", "senderHandedOver": "Der Reisende hat deinen Gegenstand.",
+    "done": "Zugestellt. Vielen Dank!", "rate": "{{name}} bewerten", "comment": "Kommentar (optional)",
+    "submitReview": "Bewertung senden", "reviewed": "Du hast diese Vereinbarung bewertet.",
+    "sys_deal_proposed": "Vereinbarung vorgeschlagen", "sys_deal_accepted": "Vereinbarung angenommen",
+    "sys_deal_handed_over": "Gegenstand übergeben – vom Reisenden geprüft", "sys_deal_delivered": "Gegenstand zugestellt",
+    "sys_deal_cancelled": "Vereinbarung abgebrochen"
+  },
+  "login": {
+    "title": "Anmelden", "why": "Du brauchst ein Konto, um zu inserieren und Nachrichten zu senden.",
+    "google": "Weiter mit Google", "or": "oder", "email": "E-Mail-Adresse", "emailLink": "Anmelde-Link senden",
+    "emailSent": "Prüfe deine E-Mails und öffne den Link.", "emailInvalid": "Gib eine gültige E-Mail-Adresse ein.",
+    "terms": "Testversion. Mit der Anmeldung akzeptierst du die Sicherheitsregeln.", "needed": "Bitte anmelden", "go": "Anmelden"
+  },
+  "rules": {
+    "title": "Sicherheitsregeln", "intro": "Bitte lies und akzeptiere sie, bevor du inserierst oder Nachrichten sendest.",
+    "name": "Dein Name (für andere sichtbar)", "nameRequired": "Gib deinen Namen ein.",
+    "r1Title": "Keine verschlossenen Pakete", "r1": "Der Reisende öffnet und prüft jeden Gegenstand. Reisende sind bei Sicherheitskontrolle und Zoll persönlich für alles im Gepäck verantwortlich.",
+    "r2Title": "Verbotene Gegenstände", "r2": "Keine Drogen, Waffen, kein Bargeld, Gold oder Schmuck, keine rezeptpflichtigen Medikamente, Tabak oder Alkohol über der Freimenge, Fälschungen, lose Batterien oder brennbare Dinge.",
+    "r3Title": "Prüfe die Regeln deiner Strecke", "r3": "Zollregeln sind in jedem Land anders. Prüfe die Regeln des Ziellandes, der Transitländer und deiner Fluggesellschaft. Viele Fluggesellschaften erlauben es nicht, Dinge für andere mitzunehmen.",
+    "r4Title": "Sicher treffen", "r4": "Trefft euch an einem öffentlichen Ort. Schreibe keine Adresse, Flugnummer oder Telefonnummer in ein Inserat.",
+    "r5Title": "Kostenlos und auf eigenes Risiko", "r5": "Take With bringt nur Menschen zusammen. Es ist kein Kurierdienst und prüft keine Gegenstände. Mitnehmen ist ein kostenloser Gefallen zwischen Nutzern.",
+    "age": "Ich bin mindestens 18 Jahre alt und akzeptiere diese Regeln.", "accept": "Akzeptieren und weiter"
+  },
+  "safety": {
+    "title": "Sicherheit", "allowedTitle": "Meist in Ordnung",
+    "allowed": "Dokumente, Kleidung, Geschenke, Spielzeug, Bücher, verpackte Lebensmittel, rezeptfreie Medikamente in der Originalverpackung.",
+    "refuseTitle": "Du darfst immer Nein sagen", "refuse": "Reisende können einen Gegenstand jederzeit ablehnen, auch bei der Übergabe. Ein Grund ist nicht nötig.",
+    "reportTitle": "Problem melden", "report": "Nutze „Melden“ bei jedem Inserat, Profil oder Chat. Wir prüfen jede Meldung.",
+    "disclaimer": "Dies ist keine Rechtsberatung."
+  },
+  "profile": {
+    "title": "Profil", "edit": "Profil bearbeiten", "name": "Name", "bio": "Über dich", "languages": "Sprachen, die du sprichst",
+    "language": "App-Sprache", "myListings": "Meine Inserate", "noListings": "Du hast noch keine Inserate.",
+    "safety": "Sicherheit", "signOut": "Abmelden", "delete": "Mein Konto löschen",
+    "deleteConfirm": "Konto, Inserate, Chats und Bewertungen endgültig löschen?",
+    "deals": "{{count}} Zustellungen", "noRatings": "Noch keine Bewertungen", "ratings": "{{avg}} ({{count}})",
+    "memberSince": "Mitglied seit {{date}}", "reviews": "Bewertungen", "activeListings": "Aktive Inserate",
+    "block": "Nutzer blockieren", "unblock": "Blockierung aufheben", "blockedNote": "Du hast diesen Nutzer blockiert.", "anonymous": "Nutzer"
+  },
+  "report": {
+    "title": "Melden", "reason": "Was ist das Problem?", "prohibited_item": "Verbotener Gegenstand", "scam": "Betrug oder Diebstahl",
+    "harassment": "Belästigung", "fake": "Falsches Inserat oder Profil", "other": "Etwas anderes",
+    "details": "Details (optional)", "submit": "Meldung senden", "thanks": "Danke. Wir prüfen deine Meldung."
+  },
+  "errors": {
+    "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut.", "network": "Keine Verbindung. Bitte versuche es erneut.",
+    "setup": "Die Datenbank ist noch nicht eingerichtet. Führe supabase/schema.sql in Supabase aus.",
+    "not_logged_in": "Bitte melde dich an.", "rules_not_accepted": "Bitte akzeptiere zuerst die Sicherheitsregeln.",
+    "listing_not_active": "Dieses Inserat ist nicht mehr aktiv.", "listing_not_found": "Inserat nicht gefunden.",
+    "own_listing": "Das ist dein eigenes Inserat.", "blocked": "Du kannst diesen Nutzer nicht kontaktieren.",
+    "inspection_required": "Bitte bestätige, dass du den Gegenstand geprüft hast.", "invalid_step": "Dieser Schritt ist jetzt nicht möglich.",
+    "not_allowed": "Das ist dir nicht erlaubt.", "listing_limit": "Du hast zu viele aktive Inserate.",
+    "deal_exists": "In diesem Chat gibt es schon eine offene Vereinbarung."
+  }
+}

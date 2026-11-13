@@ -1,0 +1,119 @@
+{
+  "app": { "name": "Take With", "tagline": "Free luggage space meets things that need to travel." },
+  "tabs": { "browse": "Browse", "post": "Post", "chats": "Chats", "profile": "Profile" },
+  "common": {
+    "back": "Back", "save": "Save", "saved": "Saved", "cancel": "Cancel", "send": "Send", "loading": "Loading…",
+    "retry": "Try again", "close": "Close", "clear": "Clear", "any": "Any", "kg": "kg", "optional": "optional",
+    "notFound": "Not found", "confirm": "Are you sure?"
+  },
+  "kind": {
+    "trip": "Trip", "request": "Request", "trips": "Trips", "requests": "Requests",
+    "tripHint": "I travel and have free space", "requestHint": "I need something carried"
+  },
+  "items": {
+    "documents": "Documents", "clothes": "Clothes", "gifts": "Gifts", "electronics": "Electronics",
+    "medicine_otc": "Medicine (no prescription)", "food": "Packaged food", "books": "Books", "other": "Other"
+  },
+  "browse": {
+    "from": "From", "to": "To", "anywhere": "Anywhere", "filters": "Filters", "list": "List", "map": "Map",
+    "dateFrom": "From date", "dateTo": "Until date", "minKg": "At least kg free", "maxKg": "At most kg",
+    "itemType": "Item type", "radius": "Search area", "radiusCity": "City only", "radiusKm": "+ {{km}} km",
+    "reset": "Reset filters", "results_one": "{{count}} result", "results_other": "{{count}} results",
+    "emptyTitle": "Nothing here yet", "emptyTrip": "No trips match. Post a request so travellers can find you.",
+    "emptyRequest": "No requests match. Post your trip so senders can find you.",
+    "postRequest": "Post a request", "postTrip": "Post a trip",
+    "mapHint": "Tap a line to see the listings on that route.", "mapEmpty": "No routes to show.",
+    "mapNative": "The map is available in the web app."
+  },
+  "place": { "search": "Search a city", "hint": "Type at least 2 letters", "none": "No city found" },
+  "listing": {
+    "freeKg": "{{kg}} kg free", "needKg": "{{kg}} kg to send", "flex": "± {{days}} days",
+    "travelDate": "Travel date", "latestDate": "Deliver by", "accepts": "Accepts", "item": "Item",
+    "description": "Description", "noDescription": "No description.", "author": "Posted by",
+    "message": "Send message", "openChat": "Open chat", "report": "Report", "yours": "This is your listing",
+    "closeIt": "Close listing", "reopen": "Reopen listing", "delete": "Delete listing",
+    "closed": "Closed", "expired": "Expired", "freeNote": "Take With is free. Carrying is a favour — no payment.",
+    "loginToMessage": "Log in to send a message"
+  },
+  "post": {
+    "title": "New listing", "what": "What do you want to post?", "route": "Route", "date": "Date",
+    "flex": "Flexible by (days)", "weightTrip": "Free weight (kg)", "weightRequest": "Item weight (kg)",
+    "typesTrip": "What can you take?", "typesRequest": "What is the item?",
+    "descTrip": "Details (where you can meet, what you prefer)", "descRequest": "Describe the item exactly",
+    "privacy": "Do not write your address, flight number or phone number here. Share them in chat if you want.",
+    "submit": "Publish", "done": "Published",
+    "errPlaces": "Choose where from and where to.", "errSame": "From and to must be different.",
+    "errDate": "Choose a date that is not in the past.", "errWeight": "Enter a weight between 0.1 and 100 kg.",
+    "errTypes": "Choose at least one item type.", "errDesc": "Describe the item (at least 10 letters)."
+  },
+  "chats": { "title": "Chats", "empty": "No chats yet. Open a listing and send a message.", "noMessages": "No messages yet" },
+  "chat": {
+    "placeholder": "Write a message", "listing": "View listing", "blocked": "You cannot message this user.",
+    "safetyTip": "Never carry a sealed package. Meet in a public place.", "you": "You"
+  },
+  "deal": {
+    "title": "Deal", "propose": "Propose a deal", "proposeHint": "Agree on the weight, then confirm each step here.",
+    "weight": "Weight (kg)", "sendProposal": "Send proposal",
+    "status_proposed": "Proposed", "status_accepted": "Accepted", "status_handed_over": "Handed over",
+    "status_delivered": "Delivered", "status_cancelled": "Cancelled",
+    "youTraveller": "You carry the item", "youSender": "You send the item",
+    "waitingAccept": "Waiting for the other person to accept.", "accept": "Accept", "decline": "Decline",
+    "cancel": "Cancel deal", "senderAccepted": "Hand the item over in a public place. The traveller will check it.",
+    "inspect": "I opened and checked the item myself. It matches the description and it is not sealed.",
+    "received": "I received the item", "notAsDescribed": "Item not as described — cancel",
+    "waitingDelivery": "Waiting for the sender to confirm the delivery.",
+    "confirmDelivered": "The item arrived — confirm delivery", "senderHandedOver": "The traveller has your item.",
+    "done": "Delivered. Thank you!", "rate": "Rate {{name}}", "comment": "Comment (optional)",
+    "submitReview": "Send rating", "reviewed": "You rated this deal.",
+    "sys_deal_proposed": "Deal proposed", "sys_deal_accepted": "Deal accepted",
+    "sys_deal_handed_over": "Item handed over — inspected by the traveller", "sys_deal_delivered": "Item delivered",
+    "sys_deal_cancelled": "Deal cancelled"
+  },
+  "login": {
+    "title": "Log in", "why": "You need an account to post and to send messages.",
+    "google": "Continue with Google", "or": "or", "email": "Email address", "emailLink": "Send me a login link",
+    "emailSent": "Check your email and open the link.", "emailInvalid": "Enter a valid email address.",
+    "terms": "Test version. By logging in you accept the safety rules.", "needed": "Please log in", "go": "Log in"
+  },
+  "rules": {
+    "title": "Safety rules", "intro": "Please read and accept before you post or send messages.",
+    "name": "Your name (shown to others)", "nameRequired": "Enter your name.",
+    "r1Title": "No sealed packages", "r1": "The traveller opens and checks every item. A traveller is personally responsible at security and customs for everything in the bag.",
+    "r2Title": "Forbidden items", "r2": "No drugs, weapons, cash, gold or jewellery, prescription medicine, tobacco or alcohol above the personal allowance, fake goods, loose batteries or flammable things.",
+    "r3Title": "Check the rules of your route", "r3": "Customs rules are different in every country. Check the rules of your destination, of transit countries and of your airline. Many airlines do not allow carrying items for other people.",
+    "r4Title": "Meet safely", "r4": "Meet in a public place. Do not post your address, flight number or phone number in a listing.",
+    "r5Title": "Free and at your own risk", "r5": "Take With only connects people. It is not a courier and does not check items. Carrying is a free favour between users.",
+    "age": "I am 18 or older and I accept these rules.", "accept": "Accept and continue"
+  },
+  "safety": {
+    "title": "Safety centre", "allowedTitle": "Usually fine",
+    "allowed": "Documents, clothes, gifts, toys, books, packaged food, medicine without prescription in its original box.",
+    "refuseTitle": "You can always say no", "refuse": "A traveller can refuse an item at any time, also at the handover. No reason is needed.",
+    "reportTitle": "Report a problem", "report": "Use “Report” on any listing, profile or chat. We review every report.",
+    "disclaimer": "This is not legal advice."
+  },
+  "profile": {
+    "title": "Profile", "edit": "Edit profile", "name": "Name", "bio": "About you", "languages": "Languages you speak",
+    "language": "App language", "myListings": "My listings", "noListings": "You have no listings yet.",
+    "safety": "Safety centre", "signOut": "Log out", "delete": "Delete my account",
+    "deleteConfirm": "Delete your account, listings, chats and ratings for ever?",
+    "deals": "{{count}} deliveries", "noRatings": "No ratings yet", "ratings": "{{avg}} ({{count}})",
+    "memberSince": "Member since {{date}}", "reviews": "Ratings", "activeListings": "Active listings",
+    "block": "Block user", "unblock": "Unblock user", "blockedNote": "You blocked this user.", "anonymous": "User"
+  },
+  "report": {
+    "title": "Report", "reason": "What is the problem?", "prohibited_item": "Forbidden item", "scam": "Scam or theft",
+    "harassment": "Harassment", "fake": "Fake listing or profile", "other": "Something else",
+    "details": "Details (optional)", "submit": "Send report", "thanks": "Thank you. We will review your report."
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.", "network": "No connection. Please try again.",
+    "setup": "The database is not set up yet. Run supabase/schema.sql in Supabase.",
+    "not_logged_in": "Please log in.", "rules_not_accepted": "Please accept the safety rules first.",
+    "listing_not_active": "This listing is no longer active.", "listing_not_found": "Listing not found.",
+    "own_listing": "This is your own listing.", "blocked": "You cannot contact this user.",
+    "inspection_required": "Please confirm that you checked the item.", "invalid_step": "This step is not possible now.",
+    "not_allowed": "You are not allowed to do this.", "listing_limit": "You have too many active listings.",
+    "deal_exists": "There is already an open deal in this chat."
+  }
+}
