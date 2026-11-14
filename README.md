@@ -18,7 +18,8 @@ The app needs four things switched on. Until step 1 is done, the app shows "The 
    - Authorized redirect URI: `https://qzmhuumnwhnrybzrzkvk.supabase.co/auth/v1/callback`
 
    Until this is done, use "Send me a login link" (email) on the login screen. It works after steps 1 and 2.
-4. **Hosting** — GitHub → repository Settings → Pages → Source: **GitHub Actions**. Then open the Actions tab and re-run "Deploy web app". GitHub Pages on a free account needs a public repository.
+4. **Test data (optional)** — to fill the app with 8 test users and 50 listings, run [`supabase/seed-mock.sql`](supabase/seed-mock.sql) in the SQL Editor. Remove them later with [`supabase/remove-mock.sql`](supabase/remove-mock.sql).
+5. **Hosting** — GitHub → repository Settings → Pages → Source: **GitHub Actions**. Then open the Actions tab and re-run "Deploy web app". GitHub Pages on a free account needs a public repository.
 
 ## Develop
 
