@@ -13,6 +13,7 @@ The app needs four things switched on. Until step 1 is done, the app shows "The 
    If you created the database earlier, run the newer files in [`supabase/migrations/`](supabase/migrations/) once each, oldest first:
    - `2026-11-15_listing_price.sql` (prices)
    - `2026-11-16_local_delivery.sql` (local delivery, couriers, admin, photo storage)
+     On a phone, use the 5 short files in `supabase/migrations/2026-11-16_local_delivery_parts/` instead (part1 to part5, in order). Long files can get cut off when you copy them on a phone.
 2. **Login return address** — Supabase → Authentication → URL Configuration:
    - Site URL: `https://mo5005.github.io/take-with/`
    - Redirect URLs: add `https://mo5005.github.io/take-with/`
