@@ -5,7 +5,7 @@ import type { Conversation, Deal, Filters, Listing, Message, Place, Profile, Rev
 const AUTHOR =
   'author:profiles!listings_author_id_fkey(id,display_name,avatar_url,rating_avg,rating_count,deals_completed)';
 const CONVERSATION =
-  '*, listing:listings(id,kind,origin_name,origin_country,dest_name,dest_country,travel_date,weight_kg,status),' +
+  '*, listing:listings(id,kind,origin_name,origin_country,dest_name,dest_country,travel_date,weight_kg,status,price_type,price_amount,currency),' +
   ' starter:profiles!conversations_starter_id_fkey(id,display_name,avatar_url),' +
   ' owner:profiles!conversations_owner_id_fkey(id,display_name,avatar_url)';
 
@@ -49,6 +49,7 @@ export async function fetchListings(f: Filters): Promise<Listing[]> {
   const kg = parseFloat(f.kg.replace(',', '.'));
   if (kg > 0) q = f.kind === 'trip' ? q.gte('weight_kg', kg) : q.lte('weight_kg', kg);
   if (f.itemType) q = q.contains('item_types', [f.itemType]);
+  if (f.freeOnly) q = q.eq('price_type', 'free');
   if (f.origin) {
     const b = box(f.origin, f.radiusKm);
     q = q.gte('origin_lat', b.minLat).lte('origin_lat', b.maxLat).gte('origin_lng', b.minLng).lte('origin_lng', b.maxLng);
@@ -90,6 +91,9 @@ export interface NewListing {
   weight_kg: number;
   item_types: string[];
   description: string;
+  price_type: Listing['price_type'];
+  price_amount: number | null;
+  currency: Listing['currency'];
 }
 
 export async function createListing(n: NewListing): Promise<string> {
@@ -101,6 +105,7 @@ export async function createListing(n: NewListing): Promise<string> {
       dest_name: n.dest.name, dest_country: n.dest.country, dest_lat: n.dest.lat, dest_lng: n.dest.lng,
       travel_date: n.travel_date, flex_days: n.flex_days, weight_kg: n.weight_kg,
       item_types: n.item_types, description: n.description,
+      price_type: n.price_type, price_amount: n.price_amount, currency: n.currency,
     })
     .select('id')
     .single();

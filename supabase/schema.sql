@@ -39,7 +39,17 @@ create table public.listings (
     and item_types <@ array['documents', 'clothes', 'gifts', 'electronics', 'medicine_otc', 'food', 'books', 'other']
   ),
   description text not null default '' check (char_length(description) <= 1000),
+  -- Price asked by the author. The app never handles money: users pay each other in cash.
+  price_type text not null default 'free',
+  price_amount numeric(10, 2),
+  currency text,
   status text not null default 'active' check (status in ('active', 'closed', 'removed')),
+  constraint listings_price_check check (
+    (price_type = 'free' and price_amount is null and currency is null)
+    or (price_type in ('per_kg', 'fixed') and price_amount is not null and currency is not null
+      and price_amount > 0 and price_amount <= 10000000
+        and currency in ('USD', 'EUR', 'SYP'))
+  ),
   created_at timestamptz not null default now()
 );
 create index listings_browse_idx on public.listings (status, kind, travel_date);
@@ -335,7 +345,8 @@ grant usage on schema public to anon, authenticated;
 grant select on public.profiles, public.listings, public.reviews to anon, authenticated;
 grant update (display_name, bio, languages, avatar_url, accepted_rules_at) on public.profiles to authenticated;
 grant insert on public.listings to authenticated;
-grant update (status, description, weight_kg, travel_date, flex_days, item_types) on public.listings to authenticated;
+grant update (status, description, weight_kg, travel_date, flex_days, item_types, price_type, price_amount, currency)
+  on public.listings to authenticated;
 grant select on public.conversations, public.messages, public.deals, public.reports, public.blocks to authenticated;
 grant insert (conversation_id, body) on public.messages to authenticated;
 grant insert (deal_id, target_id, rating, comment) on public.reviews to authenticated;

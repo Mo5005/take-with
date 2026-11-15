@@ -1,6 +1,6 @@
 # Take With
 
-Community app that connects **travellers with spare luggage space** to **people who need something carried** on the same route — e.g. 2 kg free on a flight Bremen → Damascus. Free: carrying is a favour.
+Community app that connects **travellers with spare luggage space** to **people who need something carried** on the same route — e.g. 2 kg free on a flight Bremen → Damascus. Users may carry for free or ask for a price; the app takes no fee and handles no money.
 
 **Test version:** https://mo5005.github.io/take-with/ (web app — open it on your phone and use "Add to Home Screen").
 App ID for later store apps: `com.dumo.takewith`.
@@ -10,6 +10,7 @@ App ID for later store apps: `com.dumo.takewith`.
 The app needs four things switched on. Until step 1 is done, the app shows "The database is not set up yet".
 
 1. **Database** — Supabase dashboard → SQL Editor → New query → paste all of [`supabase/schema.sql`](supabase/schema.sql) → Run.
+   If you created the database before 2026-11-15, also run [`supabase/migrations/2026-11-15_listing_price.sql`](supabase/migrations/2026-11-15_listing_price.sql) once (it adds prices to listings).
 2. **Login return address** — Supabase → Authentication → URL Configuration:
    - Site URL: `https://mo5005.github.io/take-with/`
    - Redirect URLs: add `https://mo5005.github.io/take-with/`

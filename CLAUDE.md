@@ -1,6 +1,6 @@
 # Take With
 
-Peer-to-peer app: travellers with free luggage space carry items for people on the same route. Founder is based in Germany. Routes are anywhere → anywhere. App ID: `com.dumo.takewith`.
+Peer-to-peer app: travellers with free luggage space carry items for people on the same route. The app owner is in Syria; many users are in Germany. Routes are anywhere → anywhere. App ID: `com.dumo.takewith`.
 
 **Phase: test version built** (web app on GitHub Pages: https://mo5005.github.io/take-with/). The founder tests on a phone, so every screen must work at phone width (390 px).
 
@@ -40,7 +40,7 @@ npm run web          # local dev server
 
 1. **Open-item rule.** A deal cannot become `handed_over` without the traveller's inspection confirmation. Never design a flow for sealed packages.
 2. **No public precise location.** Only city/airport level is public. No home addresses, flight numbers or exact times in listings.
-3. **Free only.** Listings have no price. No payment, wallet or escrow features until decided in DECISIONS.md.
+3. **No money through the app.** A listing may state a price (free, per kg or fixed); users pay each other in cash. No commission, payment, wallet or escrow features until decided in DECISIONS.md. Never build "pay for me" (a traveller paying for a sender's item).
 4. **Login and accepted safety rules** before posting or messaging (enforced in the database). Test version: Google or email login. SMS phone verification must be added before public launch.
 5. **Three languages always**: every user-facing string exists in `ar`, `de`, `en`; layouts must work right-to-left.
 6. **Reviews only from completed deals.**

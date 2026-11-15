@@ -3,7 +3,7 @@ import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
-import { RouteLine } from '../../components/ListingCard';
+import { RouteLine, usePriceLabel } from '../../components/ListingCard';
 import { Avatar, Button, Card, Chip, Empty, Loading, Notice, Rating, Row, Screen, confirmAsync, goBack, styles } from '../../components/ui';
 import { errorCode, fetchListing, setListingStatus, startConversation, today } from '../../lib/api';
 import { useAuth } from '../../lib/auth';
@@ -19,6 +19,7 @@ export default function ListingDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { userId } = useAuth();
   const gate = useGate();
+  const priceLabel = usePriceLabel();
   const [listing, setListing] = useState<Listing | null | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -94,6 +95,7 @@ export default function ListingDetail() {
         <Text style={styles.muted}>{countryLabel(l.origin_country, lang)} · {countryLabel(l.dest_country, lang)}</Text>
         <Row wrap style={{ marginTop: 4 }}>
           <Chip label={t(l.kind === 'trip' ? 'listing.freeKg' : 'listing.needKg', { kg: Number(l.weight_kg) })} selected />
+          <Chip label={priceLabel(l)} tone="accent" />
         </Row>
         <Info icon="calendar-outline" label={t(l.kind === 'trip' ? 'listing.travelDate' : 'listing.latestDate')}>
           {formatDate(l.travel_date, lang)}{l.flex_days > 0 ? `  ${t('listing.flex', { days: l.flex_days })}` : ''}
@@ -123,7 +125,7 @@ export default function ListingDetail() {
         </Card>
       ) : null}
 
-      <Notice text={t('listing.freeNote')} icon="heart" />
+      <Notice text={t('price.cashNote')} icon="cash-outline" />
       <Notice tone="warn" text={t('chat.safetyTip')} icon="shield-checkmark" />
       {error ? <Notice tone="error" text={t(`errors.${error}`)} /> : null}
 

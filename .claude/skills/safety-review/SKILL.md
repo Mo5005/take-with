@@ -16,7 +16,7 @@ Read `docs/TRUST-SAFETY-LEGAL.md` and the product rules in `CLAUDE.md`, then che
 5. **Verification gates** — is phone verification still required before posting and messaging?
 6. **Reputation integrity** — can ratings be created without a completed deal, or by the same person on both sides?
 7. **Abuse** — spam, fake listings, harassment in chat: is report and block reachable from every new surface?
-8. **Money** — does it introduce prices, payments, stored balances or fees? (Not allowed: the app is free only.)
+8. **Money** — does it introduce payments through the app, stored balances, fees, or a traveller paying for a sender's item? (Not allowed. A listing may only state a price; users pay each other in cash.)
 9. **Personal data (GDPR)** — which new data is collected, why, how long is it kept, is it deleted with the account, does it leave the EU?
 10. **Access control** — can a user read or change another user's listings, chats or deals? Is this enforced on the server, not only in the app?
 11. **Wording** — does any text promise safety, insurance, legality or guaranteed delivery that the platform cannot guarantee?

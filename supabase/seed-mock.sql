@@ -77,3 +77,12 @@ insert into public.listings (author_id, kind, origin_name, origin_country, origi
   ('00000000-0000-4000-a000-000000000006', 'trip', 'Stockholm', 'SE', 59.329, 18.069, 'Köln', 'DE', 50.933, 6.95, current_date + 12, 0, 3, '{documents}', 'I have space in my checked bag. No electronics please.'),
   ('00000000-0000-4000-a000-000000000001', 'request', 'Köln', 'DE', 50.933, 6.95, 'Baghdad', 'IQ', 33.341, 44.401, current_date + 72, 0, 1, '{clothes}', 'Signed university documents in an open envelope for my family.'),
   ('00000000-0000-4000-a000-000000000004', 'request', 'Köln', 'DE', 50.933, 6.95, 'Baghdad', 'IQ', 33.341, 44.401, current_date + 27, 0, 0.2, '{documents}', 'Signed university documents in an open envelope for my family.');
+
+
+-- Some listings ask for a price (cash between users); the rest are free.
+update public.listings set price_type = 'per_kg', price_amount = 3, currency = 'USD'
+where author_id in ('00000000-0000-4000-a000-000000000001', '00000000-0000-4000-a000-000000000004') and kind = 'trip';
+update public.listings set price_type = 'per_kg', price_amount = 5, currency = 'EUR'
+where author_id = '00000000-0000-4000-a000-000000000002' and kind = 'trip';
+update public.listings set price_type = 'fixed', price_amount = 10, currency = 'USD'
+where author_id in ('00000000-0000-4000-a000-000000000005', '00000000-0000-4000-a000-000000000007') and kind = 'request';

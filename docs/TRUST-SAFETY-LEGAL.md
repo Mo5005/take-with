@@ -54,7 +54,9 @@ Import rules differ per destination country. Because routes are anywhere → any
 1. **Platform role.** We connect users; we are not a carrier, courier or party to the agreement. Terms must say so clearly, and the product must behave that way.
 2. **Customs & import rules** differ for each destination — duties, allowances, forbidden goods. With open routes the user must check them; the app must say so.
 3. **Sanctions and export control.** Some destinations are under sanctions, and the rules change (for example for Syria). Check the current EU/German position before launch and again regularly. Do not assume.
-4. **Paid carrying.** Not allowed at launch: the app is free only. A traveller who regularly carries for money may be acting commercially (tax, trade registration, airline conditions of carriage) — needs legal check before paid offers are ever added.
+4. **Paid carrying.** Allowed since 2026-11-15: users may ask for a price and pay each other in cash; the app takes no fee and handles no money. A traveller who regularly carries for money may be acting commercially (tax, trade registration, airline conditions of carriage). The owner operates from Syria and seeks no approval at the start (founder's decision) — needs legal check before public launch, for Syria and for users in Germany and the EU.
+   - The app must tell users: never pay in advance; pay in cash at handover or delivery.
+   - No "pay for me": a traveller never pays for an item on behalf of a sender.
 5. **Airline conditions.** Many airlines forbid carrying items for third parties. Users must be told honestly.
 6. **GDPR.** We are based in Germany: privacy policy, legal basis for each data use, data minimisation, deletion and export of account data, EU hosting, processor agreements. ID documents (if we add verification) should stay with the verification provider — we store only the result.
 7. **EU Digital Services Act.** Reporting channel for illegal content, statement of reasons on moderation, contact point, transparent terms. Lighter duties for small platforms but not zero.

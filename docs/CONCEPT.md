@@ -43,11 +43,11 @@ Both appear in the same list/map, with a toggle. A traveller can answer a reques
 |---|---|---|
 | 1 | **Sign up / login** | Email + Google/Apple. Phone number verified by SMS (required before posting or messaging; see open question 5 in DECISIONS for the test version). |
 | 2 | **Profile** | Name, photo, languages, short bio, verification badges, rating, completed deliveries. |
-| 3 | **Post a trip** | From, to, date, free weight (kg), accepted item types, description, handover area. |
-| 4 | **Post a request** | From, to, latest delivery date, item type, weight, description, photo. |
-| 5 | **Browse list** | Sorted by date. Card shows route, date, kg, item types, author rating. |
+| 3 | **Post a trip** | From, to, date, free weight (kg), accepted item types, price (free / per kg / fixed), description, handover area. |
+| 4 | **Post a request** | From, to, latest delivery date, item type, weight, description, photo, price offered (or free). |
+| 5 | **Browse list** | Sorted by date. Card shows route, date, kg, price, item types, author rating. |
 | 6 | **Map view** | Routes drawn as arcs between cities; tap a city to see listings from/to it. |
-| 7 | **Filters** | From, to (with radius / "nearby airports"), date range, min. weight, item type, verified users only. |
+| 7 | **Filters** | From, to (with radius / "nearby airports"), date range, min. weight, item type, free only, verified users only. |
 | 8 | **In-app chat** | Contact the author without exposing phone number. Text + photos. |
 | 9 | **Deal flow** | Request → accepted → handed over → delivered → rated. See DATA-MODEL. |
 | 10 | **Ratings & reviews** | Both sides, only after a completed deal. |
@@ -67,14 +67,15 @@ Both appear in the same list/map, with a toggle. A traveller can answer a reques
 
 ### Later
 
-- Paid offers, and in-app payment with escrow (released on delivery confirmation).
+- In-app payment with escrow (released on delivery confirmation).
 - Optional item insurance.
 - Shopping requests ("buy X in Germany and bring it").
 - Other transport: car, bus.
 
 ### Deliberately not in the MVP
 
-- **Prices and payments.** Version 1 is free only: carrying is a favour, listings have no price. Paid carrying and handling money bring far more regulation. First prove people use it.
+- **Payments through the app.** A listing may state a price, but users pay each other in cash. The app takes no fee and never holds money.
+- **"Pay for me".** A traveller never pays for an item on behalf of a sender.
 - **Insurance, logistics partners.**
 
 ## 6. Key screens
@@ -91,7 +92,7 @@ Both appear in the same list/map, with a toggle. A traveller can answer a reques
 
 ## 7. Business model
 
-Free at launch — growth and trust matter more than revenue. Options for later, in order of fit (each needs a new decision):
+Free for users at launch (the owner takes no fee) — growth and trust matter more than revenue. Options for later, in order of fit (each needs a new decision):
 
 1. **Service fee on paid deals** once in-app payment exists (e.g. 10 %). Free deals stay free.
 2. **Verification / boost** — paid highlighted listing or fast-track ID badge.

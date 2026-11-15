@@ -5,6 +5,10 @@ export const ITEM_TYPES = [
 ] as const;
 export type ItemType = (typeof ITEM_TYPES)[number];
 
+export type PriceType = 'free' | 'per_kg' | 'fixed';
+export const CURRENCIES = ['USD', 'EUR', 'SYP'] as const;
+export type Currency = (typeof CURRENCIES)[number];
+
 export type DealStatus = 'proposed' | 'accepted' | 'handed_over' | 'delivered' | 'cancelled';
 
 export interface Place {
@@ -48,6 +52,9 @@ export interface Listing {
   weight_kg: number;
   item_types: ItemType[];
   description: string;
+  price_type: PriceType;
+  price_amount: number | null;
+  currency: Currency | null;
   status: 'active' | 'closed' | 'removed';
   created_at: string;
   author?: PublicProfile | null;
@@ -60,7 +67,7 @@ export interface Conversation {
   owner_id: string;
   last_message: string | null;
   last_message_at: string;
-  listing?: Pick<Listing, 'id' | 'kind' | 'origin_name' | 'origin_country' | 'dest_name' | 'dest_country' | 'travel_date' | 'weight_kg' | 'status'> | null;
+  listing?: Pick<Listing, 'id' | 'kind' | 'origin_name' | 'origin_country' | 'dest_name' | 'dest_country' | 'travel_date' | 'weight_kg' | 'status' | 'price_type' | 'price_amount' | 'currency'> | null;
   starter?: Pick<PublicProfile, 'id' | 'display_name' | 'avatar_url'> | null;
   owner?: Pick<PublicProfile, 'id' | 'display_name' | 'avatar_url'> | null;
 }
@@ -109,4 +116,5 @@ export interface Filters {
   dateTo: string;
   kg: string;
   itemType: ItemType | null;
+  freeOnly: boolean;
 }

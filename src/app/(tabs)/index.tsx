@@ -13,7 +13,7 @@ import { LANGS, setLanguage, type Lang } from '../../lib/i18n';
 import { colors, space } from '../../lib/theme';
 import { ITEM_TYPES, type Filters, type Kind, type Listing } from '../../lib/types';
 
-const EMPTY: Filters = { kind: 'trip', origin: null, dest: null, radiusKm: 150, dateFrom: '', dateTo: '', kg: '', itemType: null };
+const EMPTY: Filters = { kind: 'trip', origin: null, dest: null, radiusKm: 150, dateFrom: '', dateTo: '', kg: '', itemType: null, freeOnly: false };
 const RADII = [30, 150, 400];
 
 export default function Browse() {
@@ -44,7 +44,7 @@ export default function Browse() {
   useFocusEffect(load);
 
   const visible = useMemo(() => (rows ?? []).filter((l) => !blocked.includes(l.author_id)), [rows, blocked]);
-  const extraCount = [filters.dateFrom, filters.dateTo, filters.kg, filters.itemType].filter(Boolean).length;
+  const extraCount = [filters.dateFrom, filters.dateTo, filters.kg, filters.itemType, filters.freeOnly].filter(Boolean).length;
   const nextLang = LANGS[(LANGS.findIndex((l) => l.code === i18n.language) + 1) % LANGS.length];
 
   return (
@@ -109,6 +109,13 @@ export default function Browse() {
                 {ITEM_TYPES.map((it) => (
                   <Chip key={it} label={t(`items.${it}`)} selected={filters.itemType === it} onPress={() => set('itemType', it)} />
                 ))}
+              </Row>
+            </View>
+            <View style={styles.field}>
+              <Label>{t('price.label')}</Label>
+              <Row wrap>
+                <Chip label={t('common.any')} selected={!filters.freeOnly} onPress={() => set('freeOnly', false)} />
+                <Chip label={t('price.freeOnly')} selected={filters.freeOnly} onPress={() => set('freeOnly', true)} />
               </Row>
             </View>
             <View style={styles.field}>

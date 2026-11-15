@@ -36,7 +36,7 @@ One table for both sides, separated by `kind`.
 | `description`, `photos[]` | optional | photo required |
 | `status` | `active` \| `full` \| `expired` \| `closed` \| `removed` | same |
 
-Listings have no price: version 1 is free only.
+A listing has `price_type` (`free`, `per_kg`, `fixed`), `price_amount` and `currency` (`USD`, `EUR`, `SYP`). For a trip it is the price the traveller asks; for a request it is the price the sender offers. The app only shows it — payment is cash between users.
 Listings expire automatically after their date.
 
 ### Place

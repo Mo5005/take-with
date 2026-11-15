@@ -9,6 +9,18 @@ import { colors, space } from '../lib/theme';
 import type { Listing } from '../lib/types';
 import { Avatar, Card, Chip, Rating, Row, styles } from './ui';
 
+const SYMBOL = { USD: '$', EUR: '€', SYP: 'SYP' } as const;
+
+/** "Free", "3 $ per kg" or "10 $". Returns the text for the current language. */
+export function usePriceLabel() {
+  const { t } = useTranslation();
+  return (l: Pick<Listing, 'price_type' | 'price_amount' | 'currency'>): string => {
+    if (l.price_type === 'free' || l.price_amount == null || !l.currency) return t('price.free');
+    const amount = `${Number(l.price_amount)} ${SYMBOL[l.currency]}`;
+    return l.price_type === 'per_kg' ? t('price.perKgValue', { amount }) : amount;
+  };
+}
+
 export function RouteLine({ l, size = 18 }: { l: Pick<Listing, 'origin_name' | 'origin_country' | 'dest_name' | 'dest_country'>; size?: number }) {
   const { i18n } = useTranslation();
   const lang = i18n.language;
@@ -24,6 +36,7 @@ export function RouteLine({ l, size = 18 }: { l: Pick<Listing, 'origin_name' | '
 export function ListingCard({ listing: l, showAuthor = true }: { listing: Listing; showAuthor?: boolean }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
+  const priceLabel = usePriceLabel();
   return (
     <Card onPress={() => router.push(`/listing/${l.id}`)}>
       <Row style={{ justifyContent: 'space-between' }}>
@@ -39,6 +52,7 @@ export function ListingCard({ listing: l, showAuthor = true }: { listing: Listin
       </Text>
       <Row wrap>
         <Chip label={t(l.kind === 'trip' ? 'listing.freeKg' : 'listing.needKg', { kg: Number(l.weight_kg) })} selected />
+        <Chip label={priceLabel(l)} tone="accent" />
         {l.item_types.slice(0, 3).map((it) => <Chip key={it} label={t(`items.${it}`)} />)}
         {l.item_types.length > 3 ? <Chip label={`+${l.item_types.length - 3}`} /> : null}
       </Row>

@@ -7,7 +7,7 @@ import { Button, Card, Chip, DateField, Field, Label, LoginPrompt, Notice, Row, 
 import { createListing, errorCode, today } from '../../lib/api';
 import { useAuth } from '../../lib/auth';
 import { useGate } from '../../lib/gate';
-import { ITEM_TYPES, type ItemType, type Kind, type Place } from '../../lib/types';
+import { CURRENCIES, ITEM_TYPES, type Currency, type ItemType, type Kind, type Place, type PriceType } from '../../lib/types';
 
 export default function Post() {
   const { t } = useTranslation();
@@ -23,6 +23,9 @@ export default function Post() {
   const [weight, setWeight] = useState('');
   const [types, setTypes] = useState<ItemType[]>([]);
   const [description, setDescription] = useState('');
+  const [priceType, setPriceType] = useState<PriceType>('free');
+  const [amount, setAmount] = useState('');
+  const [currency, setCurrency] = useState<Currency>('USD');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -46,14 +49,20 @@ export default function Post() {
     if (!(kg >= 0.1 && kg <= 100)) return setError(t('post.errWeight'));
     if (types.length === 0) return setError(t('post.errTypes'));
     if (kind === 'request' && description.trim().length < 10) return setError(t('post.errDesc'));
+    const price = parseFloat(amount.replace(',', '.'));
+    if (priceType !== 'free' && !(price > 0 && price <= 10000000)) return setError(t('price.errAmount'));
     setError(null);
     setBusy(true);
     try {
       const id = await createListing({
         kind, origin, dest, travel_date: date, flex_days: flex, weight_kg: Math.round(kg * 10) / 10,
         item_types: types, description: description.trim(),
+        price_type: priceType,
+        price_amount: priceType === 'free' ? null : Math.round(price * 100) / 100,
+        currency: priceType === 'free' ? null : currency,
       });
       setOrigin(null); setDest(null); setDate(''); setFlex(0); setWeight(''); setTypes([]); setDescription('');
+      setPriceType('free'); setAmount('');
       router.push(`/listing/${id}`);
     } catch (e) {
       setError(t(`errors.${errorCode(e)}`));
@@ -117,6 +126,35 @@ export default function Post() {
           maxLength={1000}
         />
         <Notice text={t('post.privacy')} icon="lock-closed" />
+      </Card>
+
+      <Card>
+        <Label>{t(kind === 'trip' ? 'price.askTrip' : 'price.askRequest')}</Label>
+        <Segmented<PriceType>
+          value={priceType}
+          onChange={setPriceType}
+          options={[
+            { value: 'free', label: t('price.free') },
+            { value: 'per_kg', label: t('price.perKg') },
+            { value: 'fixed', label: t('price.fixed') },
+          ]}
+        />
+        {priceType !== 'free' ? (
+          <>
+            <Field
+              label={t('price.amount')}
+              value={amount}
+              onChangeText={(v) => setAmount(v.replace(/[^0-9.,]/g, ''))}
+              keyboardType="decimal-pad"
+              inputMode="decimal"
+              placeholder="3"
+            />
+            <Row wrap>
+              {CURRENCIES.map((c) => <Chip key={c} label={c} selected={currency === c} onPress={() => setCurrency(c)} />)}
+            </Row>
+          </>
+        ) : null}
+        <Notice text={t('price.cashNote')} icon="cash-outline" />
       </Card>
 
       <Notice tone="warn" text={`${t('rules.r1Title')}. ${t('rules.r2')}`} />

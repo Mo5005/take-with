@@ -3,7 +3,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import { RouteLine } from '../../components/ListingCard';
+import { RouteLine, usePriceLabel } from '../../components/ListingCard';
 import { Button, Card, Chip, Empty, Field, Loading, LoginPrompt, Notice, Row, Screen, Stars, styles } from '../../components/ui';
 import {
   createReview, dealAction, errorCode, fetchConversation, fetchDeal, fetchMessages, fetchMyReview, proposeDeal, sendMessage,
@@ -24,6 +24,7 @@ export default function Chat() {
   const [text, setText] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const priceLabel = usePriceLabel();
   const scroller = useRef<React.ComponentRef<typeof ScrollView>>(null);
 
   const addMessages = useCallback((incoming: Message[]) => {
@@ -137,6 +138,7 @@ export default function Chat() {
                 <Text style={{ color: colors.primary, fontWeight: '600' }}>{t('chat.listing')}</Text>
               </Row>
               <RouteLine l={conv.listing} size={15} />
+              <Text style={styles.muted}>{priceLabel(conv.listing)}</Text>
             </Card>
           ) : null}
 

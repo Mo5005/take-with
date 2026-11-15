@@ -7,10 +7,13 @@ Add an entry whenever something is decided or a question is answered — newest 
 
 | Date | Decision | Why |
 |---|---|---|
+| 2026-11-15 | **Users may ask for a price** (free, per kg, or fixed; USD, EUR or SYP). The app owner takes **no fee** and the app handles **no money**: users pay each other in cash | Founder's decision |
+| 2026-11-15 | **No "pay for me"**: a traveller never pays for an item on behalf of a sender | Founder's decision; highest fraud risk |
+| 2026-11-15 | The **app owner is in Syria**. No approval or licence is sought at the start | Founder's decision. Claude has not checked the law — see open question 6 |
 | 2026-11-13 | Test version login: **Google** (plus email login link as a fallback). No SMS phone check yet | Founder's decision; SMS costs money. SMS verification comes before public launch |
 | 2026-11-13 | Hosting: **GitHub Pages**, https://mo5005.github.io/take-with/ | Founder's decision; free |
 | 2026-11-13 | Cities come from a **list inside the app** (about 8,800 cities: over 50,000 people, plus capitals). Search area uses simple distance maths, not PostGIS yet | No setup needed for the test version; PostGIS can come when there is much data |
-| 2026-11-13 | **Free only** at launch: listings have no price field | Founder's decision; also simpler legally than paid carrying |
+| 2026-11-13 | **Free only** at launch: listings have no price field (replaced on 2026-11-15 by "users may ask for a price") | Founder's decision; also simpler legally than paid carrying |
 | 2026-11-13 | Routes are **anywhere → anywhere**, no corridor limit | Founder's decision |
 | 2026-11-13 | **Web app first** (installable, mobile-first), native apps later from the same code | Founder tests on a phone; a web link needs no app store |
 | 2026-11-13 | Tech stack: **Expo (React Native + web) + Supabase + PostGIS + MapLibre** | One codebase for web now and iOS/Android later; see ARCHITECTURE.md |
@@ -39,3 +42,5 @@ Photos (listing and chat), notifications, unread badges, airports in the place l
 3. Sanctions, export-control and customs rules differ per country. With open routes we cannot keep a list per destination. Is a general forbidden list plus "check the rules of your destination" enough? — needs legal check.
 4. Own domain for the public launch?
 5. Arabic and German city names exist only for about 80 large cities. Where do we get the rest?
+6. Paid carrying and operating from Syria: which rules apply in Syria, and which apply because users live in Germany and the EU (data protection, tax for people who carry for money often)? — needs legal check before public launch.
+7. Local delivery inside one city by paid couriers (exact addresses, deadlines in hours, courier ID check, admin dashboard): part of Take With, or a second app on the same code? Not decided.
