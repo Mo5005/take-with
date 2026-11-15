@@ -10,7 +10,9 @@ App ID for later store apps: `com.dumo.takewith`.
 The app needs four things switched on. Until step 1 is done, the app shows "The database is not set up yet".
 
 1. **Database** — Supabase dashboard → SQL Editor → New query → paste all of [`supabase/schema.sql`](supabase/schema.sql) → Run.
-   If you created the database before 2026-11-15, also run [`supabase/migrations/2026-11-15_listing_price.sql`](supabase/migrations/2026-11-15_listing_price.sql) once (it adds prices to listings).
+   If you created the database earlier, run the newer files in [`supabase/migrations/`](supabase/migrations/) once each, oldest first:
+   - `2026-11-15_listing_price.sql` (prices)
+   - `2026-11-16_local_delivery.sql` (local delivery, couriers, admin, photo storage)
 2. **Login return address** — Supabase → Authentication → URL Configuration:
    - Site URL: `https://mo5005.github.io/take-with/`
    - Redirect URLs: add `https://mo5005.github.io/take-with/`
@@ -19,8 +21,16 @@ The app needs four things switched on. Until step 1 is done, the app shows "The 
    - Authorized redirect URI: `https://qzmhuumnwhnrybzrzkvk.supabase.co/auth/v1/callback`
 
    Until this is done, use "Send me a login link" (email) on the login screen. It works after steps 1 and 2.
-4. **Test data (optional)** — to fill the app with 8 test users and 50 listings, run [`supabase/seed-mock.sql`](supabase/seed-mock.sql) in the SQL Editor. Remove them later with [`supabase/remove-mock.sql`](supabase/remove-mock.sql).
-5. **Hosting** — GitHub → repository Settings → Pages → Source: **GitHub Actions**. Then open the Actions tab and re-run "Deploy web app". GitHub Pages on a free account needs a public repository.
+4. **Make yourself admin** — after you logged in once, run this in the SQL Editor with your login email:
+
+   ```sql
+   insert into public.admins (user_id)
+   select id from auth.users where email = 'YOUR-EMAIL';
+   ```
+
+   Then Profile → Admin appears in the app.
+5. **Test data (optional)** — to fill the app with 8 test users, 50 trips and requests and 10 local delivery jobs (2 test users are approved couriers), run [`supabase/seed-mock.sql`](supabase/seed-mock.sql) in the SQL Editor. Remove them later with [`supabase/remove-mock.sql`](supabase/remove-mock.sql).
+6. **Hosting** — GitHub → repository Settings → Pages → Source: **GitHub Actions**. Then open the Actions tab and re-run "Deploy web app". GitHub Pages on a free account needs a public repository.
 
 ## Develop
 

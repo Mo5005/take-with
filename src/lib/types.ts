@@ -1,4 +1,9 @@
-export type Kind = 'trip' | 'request';
+export type Kind = 'trip' | 'request' | 'delivery';
+
+export const SIZES = ['small', 'medium', 'large'] as const;
+export type Size = (typeof SIZES)[number];
+export const DEADLINE_HOURS = [3, 6, 12, 24] as const;
+export type CourierStatus = 'none' | 'pending' | 'approved' | 'rejected';
 
 export const ITEM_TYPES = [
   'documents', 'clothes', 'gifts', 'electronics', 'medicine_otc', 'food', 'books', 'other',
@@ -26,6 +31,7 @@ export interface PublicProfile {
   rating_avg: number;
   rating_count: number;
   deals_completed: number;
+  courier_status?: CourierStatus;
 }
 
 export interface Profile extends PublicProfile {
@@ -49,15 +55,51 @@ export interface Listing {
   dest_lng: number;
   travel_date: string;
   flex_days: number;
-  weight_kg: number;
+  weight_kg: number | null;
   item_types: ItemType[];
   description: string;
   price_type: PriceType;
   price_amount: number | null;
   currency: Currency | null;
+  size: Size | null;
+  expires_at: string | null;
+  pickup_area: string | null;
+  dropoff_area: string | null;
+  photo_path: string | null;
   status: 'active' | 'closed' | 'removed';
   created_at: string;
   author?: PublicProfile | null;
+}
+
+export interface DeliveryDetails {
+  listing_id: string;
+  pickup_address: string;
+  pickup_phone: string;
+  dropoff_address: string;
+  dropoff_phone: string;
+}
+
+export interface CourierApplication {
+  user_id: string;
+  full_name: string;
+  phone: string;
+  city: string;
+  id_photo_path: string | null;
+  selfie_path: string | null;
+  status: 'pending' | 'approved' | 'rejected';
+  admin_note: string | null;
+  created_at: string;
+}
+
+export interface Report {
+  id: string;
+  reporter_id: string;
+  target_type: 'user' | 'listing' | 'conversation';
+  target_id: string;
+  reason: string;
+  details: string;
+  status: 'open' | 'resolved' | 'rejected';
+  created_at: string;
 }
 
 export interface Conversation {
@@ -67,7 +109,7 @@ export interface Conversation {
   owner_id: string;
   last_message: string | null;
   last_message_at: string;
-  listing?: Pick<Listing, 'id' | 'kind' | 'origin_name' | 'origin_country' | 'dest_name' | 'dest_country' | 'travel_date' | 'weight_kg' | 'status' | 'price_type' | 'price_amount' | 'currency'> | null;
+  listing?: Pick<Listing, 'id' | 'kind' | 'origin_name' | 'origin_country' | 'dest_name' | 'dest_country' | 'travel_date' | 'weight_kg' | 'status' | 'price_type' | 'price_amount' | 'currency' | 'pickup_area' | 'dropoff_area' | 'size'> | null;
   starter?: Pick<PublicProfile, 'id' | 'display_name' | 'avatar_url'> | null;
   owner?: Pick<PublicProfile, 'id' | 'display_name' | 'avatar_url'> | null;
 }
@@ -88,8 +130,9 @@ export interface Deal {
   traveller_id: string;
   sender_id: string;
   proposed_by: string;
-  weight_kg: number;
+  weight_kg: number | null;
   status: DealStatus;
+  pickup_photo: string | null;
   inspected_at: string | null;
   delivered_at: string | null;
   cancel_reason: string | null;
@@ -117,4 +160,5 @@ export interface Filters {
   kg: string;
   itemType: ItemType | null;
   freeOnly: boolean;
+  size: Size | null;
 }

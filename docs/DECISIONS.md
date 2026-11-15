@@ -7,6 +7,10 @@ Add an entry whenever something is decided or a question is answered — newest 
 
 | Date | Decision | Why |
 |---|---|---|
+| 2026-11-16 | **Local delivery is part of Take With** (third listing kind, verified couriers, admin dashboard). See docs/features/local-delivery.md | Founder's decision |
+| 2026-11-16 | Exact addresses and phone numbers of a delivery job are visible **only to the courier who took it** (and admins) | Local delivery needs addresses; keeps rule 2 for public data |
+| 2026-11-16 | Couriers are **checked by hand** with an ID photo and a face photo. The photos are **deleted after the decision** | Founder's plan; data minimisation |
+| 2026-11-16 | Delivery is finished with a **4-digit code** from the receiver (or the sender confirms) | Founder's plan |
 | 2026-11-15 | **Users may ask for a price** (free, per kg, or fixed; USD, EUR or SYP). The app owner takes **no fee** and the app handles **no money**: users pay each other in cash | Founder's decision |
 | 2026-11-15 | **No "pay for me"**: a traveller never pays for an item on behalf of a sender | Founder's decision; highest fraud risk |
 | 2026-11-15 | The **app owner is in Syria**. No approval or licence is sought at the start | Founder's decision. Claude has not checked the law — see open question 6 |
@@ -33,7 +37,7 @@ Add an entry whenever something is decided or a question is answered — newest 
 
 ## Not in the test version yet
 
-Photos (listing and chat), notifications, unread badges, airports in the place list, delivery code for the receiver, export of own data, imprint and privacy policy, moderation screen (reports are read in the Supabase dashboard).
+Photos in trips, requests and chat (local delivery has photos), notifications, unread badges, airports in the place list, delivery code for the receiver, export of own data, imprint and privacy policy, sorting delivery jobs by distance or by the courier's route, earnings history.
 
 ## Open questions
 
@@ -43,4 +47,6 @@ Photos (listing and chat), notifications, unread badges, airports in the place l
 4. Own domain for the public launch?
 5. Arabic and German city names exist only for about 80 large cities. Where do we get the rest?
 6. Paid carrying and operating from Syria: which rules apply in Syria, and which apply because users live in Germany and the EU (data protection, tax for people who carry for money often)? — needs legal check before public launch.
-7. Local delivery inside one city by paid couriers (exact addresses, deadlines in hours, courier ID check, admin dashboard): part of Take With, or a second app on the same code? Not decided.
+7. Notifications for couriers and senders (new job, accepted, deadline passed): which channel — web push, email or WhatsApp?
+8. Phone verification for couriers: SMS or WhatsApp? SMS to Syria may be expensive or unreliable.
+9. How long are pickup photos and courier phone numbers kept? — needs legal check.

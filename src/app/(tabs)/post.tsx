@@ -2,6 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
+import { DeliveryForm } from '../../components/DeliveryForm';
 import { PlacePicker } from '../../components/PlacePicker';
 import { Button, Card, Chip, DateField, Field, Label, LoginPrompt, Notice, Row, Screen, Segmented, styles } from '../../components/ui';
 import { createListing, errorCode, today } from '../../lib/api';
@@ -30,7 +31,7 @@ export default function Post() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (params.kind === 'trip' || params.kind === 'request') setKind(params.kind);
+    if (params.kind === 'trip' || params.kind === 'request' || params.kind === 'delivery') setKind(params.kind);
   }, [params.kind]);
 
   if (!userId) {
@@ -81,10 +82,17 @@ export default function Post() {
         <Segmented<Kind>
           value={kind}
           onChange={(k) => { setKind(k); setTypes([]); }}
-          options={[{ value: 'trip', label: t('kind.trip') }, { value: 'request', label: t('kind.request') }]}
+          options={[
+            { value: 'trip', label: t('kind.trip') },
+            { value: 'request', label: t('kind.request') },
+            { value: 'delivery', label: t('kind.deliveries') },
+          ]}
         />
-        <Text style={styles.muted}>{t(kind === 'trip' ? 'kind.tripHint' : 'kind.requestHint')}</Text>
+        <Text style={styles.muted}>{t(`kind.${kind}Hint`)}</Text>
       </Card>
+
+      {kind === 'delivery' ? <DeliveryForm userId={userId} gate={gate} /> : (
+      <>
 
       <Card>
         <Text style={styles.h3}>{t('post.route')}</Text>
@@ -160,6 +168,8 @@ export default function Post() {
       <Notice tone="warn" text={`${t('rules.r1Title')}. ${t('rules.r2')}`} />
       {error ? <Notice tone="error" text={error} /> : null}
       <Button label={t('post.submit')} icon="checkmark" onPress={submit} loading={busy} />
+      </>
+      )}
     </Screen>
   );
 }

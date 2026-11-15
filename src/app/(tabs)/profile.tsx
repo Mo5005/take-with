@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import { ListingCard } from '../../components/ListingCard';
 import { Avatar, Button, Card, Chip, Field, Label, LoginPrompt, Notice, Rating, Row, Screen, confirmAsync, styles } from '../../components/ui';
-import { deleteAccount, errorCode, fetchListingsByAuthor, updateProfile } from '../../lib/api';
+import { checkIsAdmin, deleteAccount, errorCode, fetchListingsByAuthor, updateProfile } from '../../lib/api';
 import { useAuth } from '../../lib/auth';
 import { LANGS, setLanguage, type Lang } from '../../lib/i18n';
 import { supabase } from '../../lib/supabase';
@@ -19,6 +19,11 @@ export default function ProfileTab() {
   const [status, setStatus] = useState<{ tone: 'info' | 'error'; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [listings, setListings] = useState<Listing[]>([]);
+  const [admin, setAdmin] = useState(false);
+
+  useEffect(() => {
+    if (userId) checkIsAdmin().then(setAdmin).catch(() => setAdmin(false));
+  }, [userId]);
 
   useEffect(() => {
     if (!profile) return;
@@ -63,7 +68,7 @@ export default function ProfileTab() {
   const remove = async () => {
     if (!(await confirmAsync(t('profile.deleteConfirm')))) return;
     try {
-      await deleteAccount();
+      await deleteAccount(userId);
       router.replace('/');
     } catch (e) {
       setStatus({ tone: 'error', text: t(`errors.${errorCode(e)}`) });
@@ -107,6 +112,13 @@ export default function ProfileTab() {
         {status ? <Notice tone={status.tone} text={status.text} /> : null}
         <Button label={t('common.save')} onPress={save} loading={busy} />
       </Card>
+
+      <Card>
+        <Text style={styles.h3}>{t('courier.title')}</Text>
+        <Text style={styles.muted}>{t(`courier.status_${profile?.courier_status ?? 'none'}`)}</Text>
+        <Button label={t('courier.open')} variant="secondary" icon="bicycle" onPress={() => router.push('/courier')} />
+      </Card>
+      {admin ? <Button label={t('admin.title')} icon="construct-outline" onPress={() => router.push('/admin')} /> : null}
 
       <LanguageCard />
 

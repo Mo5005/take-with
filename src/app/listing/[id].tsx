@@ -3,34 +3,44 @@ import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
-import { RouteLine, usePriceLabel } from '../../components/ListingCard';
+import { AddressCard } from '../../components/AddressCard';
+import { Photo } from '../../components/ImageField';
+import { RouteLine, usePriceLabel, useTimeLeft } from '../../components/ListingCard';
 import { Avatar, Button, Card, Chip, Empty, Loading, Notice, Rating, Row, Screen, confirmAsync, goBack, styles } from '../../components/ui';
-import { errorCode, fetchListing, setListingStatus, startConversation, today } from '../../lib/api';
+import {
+  acceptDelivery, errorCode, fetchDeliveryDetails, fetchListing, publicImageUrl, setListingStatus, startConversation, today,
+} from '../../lib/api';
 import { useAuth } from '../../lib/auth';
-import { countryLabel } from '../../lib/cities';
+import { cityLabel, countryLabel } from '../../lib/cities';
 import { useGate } from '../../lib/gate';
 import { formatDate } from '../../lib/i18n';
 import { colors } from '../../lib/theme';
-import type { Listing } from '../../lib/types';
+import type { DeliveryDetails, Listing } from '../../lib/types';
 
 export default function ListingDetail() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { userId } = useAuth();
+  const { userId, profile } = useAuth();
   const gate = useGate();
   const priceLabel = usePriceLabel();
+  const timeLeft = useTimeLeft();
   const [listing, setListing] = useState<Listing | null | undefined>(undefined);
+  const [details, setDetails] = useState<DeliveryDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(() => {
     let live = true;
     fetchListing(id)
-      .then((l) => live && setListing(l))
+      .then((l) => {
+        if (!live) return;
+        setListing(l);
+        if (l?.kind === 'delivery' && userId) fetchDeliveryDetails(l.id).then((d) => live && setDetails(d)).catch(() => {});
+      })
       .catch((e) => { if (live) { setListing(null); setError(errorCode(e)); } });
     return () => { live = false; };
-  }, [id]);
+  }, [id, userId]);
   useFocusEffect(load);
 
   if (listing === undefined) return <Screen title="" back><Loading /></Screen>;
@@ -43,15 +53,31 @@ export default function ListingDetail() {
   }
 
   const l = listing;
+  const local = l.kind === 'delivery';
   const mine = l.author_id === userId;
-  const expired = l.travel_date < today();
+  const left = local ? timeLeft(l.expires_at) : null;
+  const expired = local ? !left : l.travel_date < today();
   const active = l.status === 'active' && !expired;
+  const isCourier = profile?.courier_status === 'approved';
 
   const message = async () => {
     if (!gate()) return;
     setBusy(true);
     try {
       const conv = await startConversation(l.id);
+      router.push(`/chat/${conv}`);
+    } catch (e) {
+      setError(errorCode(e));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const accept = async () => {
+    if (!gate()) return;
+    setBusy(true);
+    try {
+      const conv = await acceptDelivery(l.id);
       router.push(`/chat/${conv}`);
     } catch (e) {
       setError(errorCode(e));
@@ -88,18 +114,31 @@ export default function ListingDetail() {
         ) : undefined
       }
     >
-      {!active ? <Notice tone="warn" text={t(expired ? 'listing.expired' : 'listing.closed')} /> : null}
+      {local && l.status === 'closed' ? <Notice text={t('delivery.taken')} icon="bicycle" /> : null}
+      {!active && !(local && l.status === 'closed') ? <Notice tone="warn" text={t(expired ? (local ? 'delivery.expired' : 'listing.expired') : 'listing.closed')} /> : null}
 
       <Card>
         <RouteLine l={l} size={22} />
-        <Text style={styles.muted}>{countryLabel(l.origin_country, lang)} · {countryLabel(l.dest_country, lang)}</Text>
+        <Text style={styles.muted}>
+          {local
+            ? `${cityLabel(l.origin_name, l.origin_country, lang)} · ${countryLabel(l.origin_country, lang)}`
+            : `${countryLabel(l.origin_country, lang)} · ${countryLabel(l.dest_country, lang)}`}
+        </Text>
         <Row wrap style={{ marginTop: 4 }}>
-          <Chip label={t(l.kind === 'trip' ? 'listing.freeKg' : 'listing.needKg', { kg: Number(l.weight_kg) })} selected />
+          {local ? (
+            <Chip label={t(`delivery.size_${l.size}`)} selected />
+          ) : (
+            <Chip label={t(l.kind === 'trip' ? 'listing.freeKg' : 'listing.needKg', { kg: Number(l.weight_kg) })} selected />
+          )}
           <Chip label={priceLabel(l)} tone="accent" />
         </Row>
-        <Info icon="calendar-outline" label={t(l.kind === 'trip' ? 'listing.travelDate' : 'listing.latestDate')}>
-          {formatDate(l.travel_date, lang)}{l.flex_days > 0 ? `  ${t('listing.flex', { days: l.flex_days })}` : ''}
-        </Info>
+        {local ? (
+          <Info icon="time-outline" label={t('delivery.deadline')}>{left ?? t('delivery.expired')}</Info>
+        ) : (
+          <Info icon="calendar-outline" label={t(l.kind === 'trip' ? 'listing.travelDate' : 'listing.latestDate')}>
+            {formatDate(l.travel_date, lang)}{l.flex_days > 0 ? `  ${t('listing.flex', { days: l.flex_days })}` : ''}
+          </Info>
+        )}
         <View style={styles.field}>
           <Text style={styles.label}>{t(l.kind === 'trip' ? 'listing.accepts' : 'listing.item')}</Text>
           <Row wrap>{l.item_types.map((it) => <Chip key={it} label={t(`items.${it}`)} />)}</Row>
@@ -108,7 +147,10 @@ export default function ListingDetail() {
           <Text style={styles.label}>{t('listing.description')}</Text>
           <Text style={styles.body}>{l.description || t('listing.noDescription')}</Text>
         </View>
+        {l.photo_path ? <Photo url={publicImageUrl('listing-photos', l.photo_path)} /> : null}
       </Card>
+
+      {details ? <AddressCard d={details} /> : null}
 
       {l.author ? (
         <Card onPress={() => router.push(`/user/${l.author_id}`)}>
@@ -134,10 +176,22 @@ export default function ListingDetail() {
           <Text style={[styles.muted, { textAlign: 'center' }]}>{t('listing.yours')}</Text>
           {l.status === 'active' ? (
             <Button label={t('listing.closeIt')} variant="secondary" icon="pause-circle-outline" onPress={() => changeStatus('closed')} />
-          ) : (
+          ) : !local ? (
             <Button label={t('listing.reopen')} variant="secondary" icon="play-circle-outline" onPress={() => changeStatus('active')} />
-          )}
+          ) : null}
           <Button label={t('listing.delete')} variant="danger" icon="trash-outline" onPress={() => changeStatus('removed')} />
+        </>
+      ) : local ? (
+        <>
+          {active && isCourier ? <Button label={t('delivery.accept')} icon="bicycle" onPress={accept} loading={busy} /> : null}
+          {active && !isCourier ? (
+            profile?.courier_status === 'pending' ? (
+              <Notice text={t('delivery.courierPending')} />
+            ) : (
+              <Button label={t('delivery.becomeCourier')} icon="id-card-outline" onPress={() => (userId ? router.push('/courier') : router.push('/login'))} />
+            )
+          ) : null}
+          <Button label={t(userId ? 'listing.message' : 'listing.loginToMessage')} variant="secondary" icon="chatbubble-ellipses" onPress={message} disabled={busy} />
         </>
       ) : (
         <Button

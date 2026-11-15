@@ -21,9 +21,33 @@ export function usePriceLabel() {
   };
 }
 
-export function RouteLine({ l, size = 18 }: { l: Pick<Listing, 'origin_name' | 'origin_country' | 'dest_name' | 'dest_country'>; size?: number }) {
+/** "2 h 15 min left", or null when the deadline has passed. */
+export function useTimeLeft() {
+  const { t } = useTranslation();
+  return (iso: string | null): string | null => {
+    if (!iso) return null;
+    const min = Math.floor((new Date(iso).getTime() - Date.now()) / 60000);
+    if (min <= 0) return null;
+    const h = Math.floor(min / 60);
+    return t('delivery.left', { time: h > 0 ? t('delivery.hm', { h, m: min % 60 }) : t('delivery.m', { m: min }) });
+  };
+}
+
+type RouteFields = Pick<Listing, 'origin_name' | 'origin_country' | 'dest_name' | 'dest_country'> &
+  Partial<Pick<Listing, 'pickup_area' | 'dropoff_area'>>;
+
+export function RouteLine({ l, size = 18 }: { l: RouteFields; size?: number }) {
   const { i18n } = useTranslation();
   const lang = i18n.language;
+  if (l.pickup_area && l.dropoff_area) {
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, flexWrap: 'wrap' }}>
+        <Text style={{ fontSize: size, fontWeight: '700', color: colors.text }}>{l.pickup_area}</Text>
+        <Ionicons name={lang === 'ar' ? 'arrow-back' : 'arrow-forward'} size={size} color={colors.accent} />
+        <Text style={{ fontSize: size, fontWeight: '700', color: colors.text }}>{l.dropoff_area}</Text>
+      </View>
+    );
+  }
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, flexWrap: 'wrap' }}>
       <Text style={{ fontSize: size, fontWeight: '700', color: colors.text }}>{cityLabel(l.origin_name, l.origin_country, lang)}</Text>
@@ -37,21 +61,30 @@ export function ListingCard({ listing: l, showAuthor = true }: { listing: Listin
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
   const priceLabel = usePriceLabel();
+  const timeLeft = useTimeLeft();
+  const local = l.kind === 'delivery';
   return (
     <Card onPress={() => router.push(`/listing/${l.id}`)}>
       <Row style={{ justifyContent: 'space-between' }}>
-        <Chip label={t(`kind.${l.kind}`)} tone={l.kind === 'request' ? 'accent' : undefined} />
-        <Text style={styles.muted}>
-          {formatDate(l.travel_date, lang)}
-          {l.flex_days > 0 ? `  ${t('listing.flex', { days: l.flex_days })}` : ''}
+        <Chip label={t(`kind.${l.kind}`)} tone={l.kind !== 'trip' ? 'accent' : undefined} />
+        <Text style={[styles.muted, local && { color: colors.accent, fontWeight: '600' }]}>
+          {local
+            ? timeLeft(l.expires_at) ?? t('delivery.expired')
+            : `${formatDate(l.travel_date, lang)}${l.flex_days > 0 ? `  ${t('listing.flex', { days: l.flex_days })}` : ''}`}
         </Text>
       </Row>
       <RouteLine l={l} />
       <Text style={styles.muted}>
-        {countryLabel(l.origin_country, lang)} · {countryLabel(l.dest_country, lang)}
+        {local
+          ? `${cityLabel(l.origin_name, l.origin_country, lang)} · ${countryLabel(l.origin_country, lang)}`
+          : `${countryLabel(l.origin_country, lang)} · ${countryLabel(l.dest_country, lang)}`}
       </Text>
       <Row wrap>
-        <Chip label={t(l.kind === 'trip' ? 'listing.freeKg' : 'listing.needKg', { kg: Number(l.weight_kg) })} selected />
+        {local ? (
+          <Chip label={t(`delivery.size_${l.size}`)} selected />
+        ) : (
+          <Chip label={t(l.kind === 'trip' ? 'listing.freeKg' : 'listing.needKg', { kg: Number(l.weight_kg) })} selected />
+        )}
         <Chip label={priceLabel(l)} tone="accent" />
         {l.item_types.slice(0, 3).map((it) => <Chip key={it} label={t(`items.${it}`)} />)}
         {l.item_types.length > 3 ? <Chip label={`+${l.item_types.length - 3}`} /> : null}

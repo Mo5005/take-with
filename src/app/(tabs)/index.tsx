@@ -11,9 +11,9 @@ import { errorCode, fetchListings, today } from '../../lib/api';
 import { useAuth } from '../../lib/auth';
 import { LANGS, setLanguage, type Lang } from '../../lib/i18n';
 import { colors, space } from '../../lib/theme';
-import { ITEM_TYPES, type Filters, type Kind, type Listing } from '../../lib/types';
+import { ITEM_TYPES, SIZES, type Filters, type Kind, type Listing } from '../../lib/types';
 
-const EMPTY: Filters = { kind: 'trip', origin: null, dest: null, radiusKm: 150, dateFrom: '', dateTo: '', kg: '', itemType: null, freeOnly: false };
+const EMPTY: Filters = { kind: 'trip', origin: null, dest: null, radiusKm: 150, dateFrom: '', dateTo: '', kg: '', itemType: null, freeOnly: false, size: null };
 const RADII = [30, 150, 400];
 
 export default function Browse() {
@@ -44,7 +44,8 @@ export default function Browse() {
   useFocusEffect(load);
 
   const visible = useMemo(() => (rows ?? []).filter((l) => !blocked.includes(l.author_id)), [rows, blocked]);
-  const extraCount = [filters.dateFrom, filters.dateTo, filters.kg, filters.itemType, filters.freeOnly].filter(Boolean).length;
+  const extraCount = [filters.dateFrom, filters.dateTo, filters.kg, filters.itemType, filters.freeOnly, filters.size].filter(Boolean).length;
+  const local = filters.kind === 'delivery';
   const nextLang = LANGS[(LANGS.findIndex((l) => l.code === i18n.language) + 1) % LANGS.length];
 
   return (
@@ -62,14 +63,22 @@ export default function Browse() {
       <Segmented<Kind>
         value={filters.kind}
         onChange={(v) => set('kind', v)}
-        options={[{ value: 'trip', label: t('kind.trips') }, { value: 'request', label: t('kind.requests') }]}
+        options={[
+          { value: 'trip', label: t('kind.trips') },
+          { value: 'request', label: t('kind.requests') },
+          { value: 'delivery', label: t('kind.deliveries') },
+        ]}
       />
 
       <Card>
-        <Row style={{ alignItems: 'flex-end' }}>
-          <PlacePicker label={t('browse.from')} value={filters.origin} onChange={(p) => set('origin', p)} placeholder={t('browse.anywhere')} icon="airplane-outline" />
-          <PlacePicker label={t('browse.to')} value={filters.dest} onChange={(p) => set('dest', p)} placeholder={t('browse.anywhere')} />
-        </Row>
+        {local ? (
+          <PlacePicker label={t('delivery.city')} value={filters.origin} onChange={(p) => set('origin', p)} placeholder={t('browse.anywhere')} />
+        ) : (
+          <Row style={{ alignItems: 'flex-end' }}>
+            <PlacePicker label={t('browse.from')} value={filters.origin} onChange={(p) => set('origin', p)} placeholder={t('browse.anywhere')} icon="airplane-outline" />
+            <PlacePicker label={t('browse.to')} value={filters.dest} onChange={(p) => set('dest', p)} placeholder={t('browse.anywhere')} />
+          </Row>
+        )}
         <Row style={{ justifyContent: 'space-between' }}>
           <Pressable onPress={() => setShowFilters((s) => !s)} accessibilityRole="button" accessibilityState={{ expanded: showFilters }}>
             <Row style={{ gap: 6, paddingVertical: 6 }}>
@@ -89,7 +98,29 @@ export default function Browse() {
           </View>
         </Row>
 
-        {showFilters && (
+        {showFilters && local && (
+          <View style={{ gap: space.md }}>
+            <View style={styles.field}>
+              <Label>{t('delivery.size')}</Label>
+              <Row wrap>
+                <Chip label={t('common.any')} selected={!filters.size} onPress={() => set('size', null)} />
+                {SIZES.map((s) => <Chip key={s} label={t(`delivery.size_${s}`)} selected={filters.size === s} onPress={() => set('size', s)} />)}
+              </Row>
+            </View>
+            <View style={styles.field}>
+              <Label>{t('browse.itemType')}</Label>
+              <Row wrap>
+                <Chip label={t('common.any')} selected={!filters.itemType} onPress={() => set('itemType', null)} />
+                {ITEM_TYPES.map((it) => (
+                  <Chip key={it} label={t(`items.${it}`)} selected={filters.itemType === it} onPress={() => set('itemType', it)} />
+                ))}
+              </Row>
+            </View>
+            <Button label={t('browse.reset')} variant="ghost" onPress={() => setFilters({ ...EMPTY, kind: filters.kind })} />
+          </View>
+        )}
+
+        {showFilters && !local && (
           <View style={{ gap: space.md }}>
             <Row>
               <DateField label={t('browse.dateFrom')} value={filters.dateFrom} min={today()} onChange={(v) => set('dateFrom', v)} />
@@ -155,11 +186,11 @@ export default function Browse() {
         </View>
       ) : visible.length === 0 ? (
         !error && (
-          <Empty title={t('browse.emptyTitle')} text={t(filters.kind === 'trip' ? 'browse.emptyTrip' : 'browse.emptyRequest')}>
+          <Empty title={t('browse.emptyTitle')} text={t(`browse.empty_${filters.kind}`)}>
             <Button
-              label={t(filters.kind === 'trip' ? 'browse.postRequest' : 'browse.postTrip')}
+              label={t(`browse.post_${filters.kind}`)}
               icon="add"
-              onPress={() => router.push({ pathname: '/post', params: { kind: filters.kind === 'trip' ? 'request' : 'trip' } })}
+              onPress={() => router.push({ pathname: '/post', params: { kind: filters.kind === 'trip' ? 'request' : filters.kind === 'request' ? 'trip' : 'delivery' } })}
             />
           </Empty>
         )

@@ -72,9 +72,16 @@ Import rules differ per destination country. Because routes are anywhere → any
 | 2 Verified | ID check (v2) | Badge, higher ranking |
 | 3 Trusted | 3+ completed deals, rating ≥ 4.5, no upheld reports | "Trusted" badge |
 
-## 6. Moderation
+## 6. Local delivery
 
-- MVP: manual. Report queue reviewed by the founder; target response within 24 h.
+- Couriers send an ID photo and a face photo. Only admins see them; they are deleted after the decision. This is sensitive personal data — needs legal check.
+- Exact addresses and phone numbers are visible only to the courier who took the job, the sender and admins.
+- The courier must photograph and inspect the item at pickup (open-item rule).
+- Delivery is confirmed with a 4-digit code from the receiver; 10 wrong tries block the code.
+
+## 7. Moderation
+
+- MVP: manual. Report queue reviewed by the founder in the in-app Admin screen; target response within 24 h.
 - Keyword flags in listings (not in private chat content beyond what the user reports) for prohibited items.
 - Actions: warn, remove listing, suspend, ban (by phone number and device).
 - Keep an audit log of moderation decisions.

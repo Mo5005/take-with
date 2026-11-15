@@ -32,7 +32,8 @@ Goal: built by the founder with Claude, testable on a phone through a web link, 
 | `src/components/` | Shared UI parts, place picker, map |
 | `src/lib/` | Supabase client, data functions (`api.ts`), login state, languages, city search |
 | `src/locales/` | Texts in `en`, `de`, `ar` |
-| `supabase/schema.sql` | Tables, security rules and server functions |
+| `supabase/schema.sql` | Tables, security rules, server functions and photo storage rules |
+| `supabase/migrations/` | Changes for a database that already exists |
 | `.github/workflows/deploy.yml` | Build and publish to GitHub Pages |
 
 ## Database security
@@ -41,3 +42,6 @@ Goal: built by the founder with Claude, testable on a phone through a web link, 
 - A deal changes status only through the server function `deal_action`. The database refuses `handed_over` without the traveller's inspection.
 - Ratings can only be written for a delivered deal, by the two people in it.
 - Users cannot change their own rating or delivery count.
+- Admin rights come from the `admins` table, which users cannot write to.
+- Delivery addresses and delivery codes are in separate tables with their own read rules.
+- Photos: `verification` (private: owner and admins), `listing-photos` (public), `deal-photos` (private: the two people in the deal and admins).

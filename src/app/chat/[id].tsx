@@ -3,16 +3,18 @@ import { router, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { AddressCard } from '../../components/AddressCard';
+import { ImageField, Photo } from '../../components/ImageField';
 import { RouteLine, usePriceLabel } from '../../components/ListingCard';
 import { Button, Card, Chip, Empty, Field, Loading, LoginPrompt, Notice, Row, Screen, Stars, styles } from '../../components/ui';
 import {
-  createReview, dealAction, errorCode, fetchConversation, fetchDeal, fetchMessages, fetchMyReview, proposeDeal, sendMessage,
+  createReview, dealAction, deliveryComplete, deliveryPickup, errorCode, fetchDealCode, fetchDeliveryDetails, signedImageUrl, uploadImage, fetchConversation, fetchDeal, fetchMessages, fetchMyReview, proposeDeal, sendMessage,
 } from '../../lib/api';
 import { useAuth } from '../../lib/auth';
 import { formatTime } from '../../lib/i18n';
 import { supabase } from '../../lib/supabase';
 import { colors, radius, space } from '../../lib/theme';
-import type { Conversation, Deal, Message } from '../../lib/types';
+import type { Conversation, Deal, DeliveryDetails, Message } from '../../lib/types';
 
 export default function Chat() {
   const { t, i18n } = useTranslation();
@@ -257,13 +259,13 @@ function DealPanel({
   const err = error ? <Notice tone="error" text={t(`errors.${error}`)} /> : null;
 
   if (!deal || deal.status === 'cancelled') {
-    const canPropose = conv.listing?.status === 'active';
+    const canPropose = conv.listing?.status === 'active' && conv.listing?.kind !== 'delivery';
     return (
       <Card>
         {deal ? <Chip label={t('deal.status_cancelled')} /> : null}
         {!open ? (
           <>
-            <Text style={styles.muted}>{t('deal.proposeHint')}</Text>
+            <Text style={styles.muted}>{t(conv.listing?.kind === 'delivery' ? 'delivery.chatHint' : 'deal.proposeHint')}</Text>
             {canPropose ? <Button label={t('deal.propose')} variant="secondary" icon="hand-left-outline" onPress={() => setOpen(true)} /> : null}
           </>
         ) : (
@@ -293,15 +295,16 @@ function DealPanel({
   }
 
   const amTraveller = deal.traveller_id === userId;
+  const local = conv.listing?.kind === 'delivery';
   const cancel = (reason?: string) => run(() => dealAction(deal.id, 'cancel', false, reason));
 
   return (
     <Card>
       <Row style={{ justifyContent: 'space-between' }} wrap>
-        <Text style={styles.h3}>{t('deal.title')} · {Number(deal.weight_kg)} {t('common.kg')}</Text>
+        <Text style={styles.h3}>{t('deal.title')}{deal.weight_kg != null ? ` · ${Number(deal.weight_kg)} ${t('common.kg')}` : ''}</Text>
         <Chip label={t(`deal.status_${deal.status}`)} selected={deal.status === 'delivered'} tone="accent" />
       </Row>
-      <Text style={styles.muted}>{t(amTraveller ? 'deal.youTraveller' : 'deal.youSender')}</Text>
+      <Text style={styles.muted}>{t(amTraveller ? (local ? 'delivery.youCourier' : 'deal.youTraveller') : 'deal.youSender')}</Text>
 
       {deal.status === 'proposed' && deal.proposed_by === userId ? (
         <>
@@ -317,7 +320,11 @@ function DealPanel({
         </Row>
       ) : null}
 
-      {deal.status === 'accepted' && amTraveller ? (
+      {local && deal.status !== 'delivered' ? (
+        <DeliverySteps deal={deal} amCourier={amTraveller} onChanged={onChanged} onCancel={() => cancel()} busy={busy} />
+      ) : null}
+
+      {!local && deal.status === 'accepted' && amTraveller ? (
         <>
           <Pressable
             onPress={() => setInspected((v) => !v)}
@@ -339,16 +346,16 @@ function DealPanel({
         </>
       ) : null}
 
-      {deal.status === 'accepted' && !amTraveller ? (
+      {!local && deal.status === 'accepted' && !amTraveller ? (
         <>
           <Text style={styles.body}>{t('deal.senderAccepted')}</Text>
           <Button label={t('deal.cancel')} variant="danger" loading={busy} onPress={() => cancel()} />
         </>
       ) : null}
 
-      {deal.status === 'handed_over' && amTraveller ? <Text style={styles.body}>{t('deal.waitingDelivery')}</Text> : null}
+      {!local && deal.status === 'handed_over' && amTraveller ? <Text style={styles.body}>{t('deal.waitingDelivery')}</Text> : null}
 
-      {deal.status === 'handed_over' && !amTraveller ? (
+      {!local && deal.status === 'handed_over' && !amTraveller ? (
         <>
           <Text style={styles.body}>{t('deal.senderHandedOver')}</Text>
           <Button label={t('deal.confirmDelivered')} icon="checkmark-done" loading={busy} onPress={() => run(() => dealAction(deal.id, 'deliver'))} />
@@ -379,5 +386,139 @@ function DealPanel({
       ) : null}
       {err}
     </Card>
+  );
+}
+
+/** Local delivery: pickup with photo, then the receiver's code. */
+function DeliverySteps({
+  deal, amCourier, onChanged, onCancel, busy: parentBusy,
+}: {
+  deal: Deal;
+  amCourier: boolean;
+  onChanged: () => void;
+  onCancel: () => void;
+  busy: boolean;
+}) {
+  const { t } = useTranslation();
+  const [details, setDetails] = useState<DeliveryDetails | null>(null);
+  const [code, setCode] = useState<string | null>(null);
+  const [pickupUrl, setPickupUrl] = useState<string | null>(null);
+  const [photo, setPhoto] = useState<string | null>(null);
+  const [inspected, setInspected] = useState(false);
+  const [codeInput, setCodeInput] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchDeliveryDetails(deal.listing_id).then(setDetails).catch(() => {});
+    if (!amCourier) fetchDealCode(deal.id).then(setCode).catch(() => {});
+  }, [deal.listing_id, deal.id, amCourier]);
+  useEffect(() => {
+    if (deal.pickup_photo) signedImageUrl('deal-photos', deal.pickup_photo).then(setPickupUrl);
+  }, [deal.pickup_photo]);
+
+  const run = async (fn: () => Promise<void>) => {
+    setBusy(true);
+    setError(null);
+    try {
+      await fn();
+    } catch (e) {
+      setError(t(`errors.${errorCode(e)}`));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const codeBox = code ? (
+    <View style={{ alignItems: 'center', gap: 4, padding: space.md, borderRadius: radius.md, backgroundColor: colors.accentSoft }}>
+      <Text style={styles.label}>{t('delivery.codeTitle')}</Text>
+      <Text style={{ fontSize: 32, fontWeight: '800', letterSpacing: 8, color: colors.text }} selectable>{code}</Text>
+      <Text style={[styles.muted, { textAlign: 'center' }]}>{t('delivery.codeForSender')}</Text>
+    </View>
+  ) : null;
+
+  return (
+    <View style={{ gap: space.sm }}>
+      {details ? <AddressCard d={details} /> : null}
+
+      {deal.status === 'accepted' && amCourier ? (
+        <>
+          <ImageField label={t('delivery.pickupPhoto')} uri={photo} onChange={setPhoto} />
+          <Pressable
+            onPress={() => setInspected((v) => !v)}
+            style={{ flexDirection: 'row', gap: space.sm, alignItems: 'flex-start', paddingVertical: space.sm }}
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked: inspected }}
+          >
+            <Ionicons name={inspected ? 'checkbox' : 'square-outline'} size={24} color={colors.primary} />
+            <View style={{ flex: 1 }}><Text style={styles.body}>{t('deal.inspect')}</Text></View>
+          </Pressable>
+          <Button
+            label={t('delivery.pickupConfirm')}
+            icon="cube-outline"
+            disabled={!inspected || !photo}
+            loading={busy}
+            onPress={() => run(async () => {
+              const path = await uploadImage('deal-photos', deal.id, 'pickup', photo as string);
+              await deliveryPickup(deal.id, inspected, path);
+              onChanged();
+            })}
+          />
+          <Button label={t('deal.notAsDescribed')} variant="danger" disabled={busy || parentBusy} onPress={onCancel} />
+        </>
+      ) : null}
+
+      {deal.status === 'accepted' && !amCourier ? (
+        <>
+          {codeBox}
+          <Text style={styles.body}>{t('delivery.waitingPickup')}</Text>
+          <Button label={t('deal.cancel')} variant="danger" disabled={parentBusy} onPress={onCancel} />
+        </>
+      ) : null}
+
+      {deal.status === 'handed_over' ? <Photo url={pickupUrl} height={160} /> : null}
+
+      {deal.status === 'handed_over' && amCourier ? (
+        <>
+          <Field
+            label={t('delivery.enterCode')}
+            value={codeInput}
+            onChangeText={(v) => setCodeInput(v.replace(/[^0-9]/g, '').slice(0, 4))}
+            keyboardType="number-pad"
+            inputMode="numeric"
+            style={{ fontSize: 24, letterSpacing: 6, textAlign: 'center' }}
+          />
+          <Button
+            label={t('delivery.confirmCode')}
+            icon="checkmark-done"
+            disabled={codeInput.length !== 4}
+            loading={busy}
+            onPress={() => run(async () => {
+              const ok = await deliveryComplete(deal.id, codeInput);
+              if (!ok) throw new Error('wrong_code');
+              onChanged();
+            })}
+          />
+        </>
+      ) : null}
+
+      {deal.status === 'handed_over' && !amCourier ? (
+        <>
+          {codeBox}
+          <Text style={styles.body}>{t('deal.senderHandedOver')}</Text>
+          <Button
+            label={t('deal.confirmDelivered')}
+            variant="secondary"
+            loading={busy}
+            onPress={() => run(async () => {
+              await dealAction(deal.id, 'deliver');
+              onChanged();
+            })}
+          />
+        </>
+      ) : null}
+
+      {error ? <Notice tone="error" text={error} /> : null}
+    </View>
   );
 }

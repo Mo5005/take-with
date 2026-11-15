@@ -23,6 +23,12 @@ npm run web          # local dev server
 - After the first run, never edit `schema.sql` alone: add a new file `supabase/migrations/<date>_<name>.sql` with only the change, update `schema.sql` to match, and tell the founder to run the migration.
 - Test SQL on a local Postgres first (stub the `auth` schema, roles `anon` and `authenticated`, and the `supabase_realtime` publication).
 
+## Admin and couriers
+
+- Admin rights come only from the `admins` table; never from a column the user can change.
+- Only approved couriers (`profiles.courier_status = 'approved'`) can accept delivery jobs. This is checked in `accept_delivery`.
+- ID photos are deleted after the admin's decision. Keep it that way.
+
 ## Read first
 
 - @docs/DECISIONS.md — decisions and open questions (project memory)
@@ -35,11 +41,13 @@ npm run web          # local dev server
 - **Trip**: a traveller's offer of free capacity. **Request**: a sender's need. Both are **listings**.
 - **Traveller** carries; **sender** hands over; **receiver** collects at the destination.
 - **Deal**: an agreed match between one traveller and one sender.
+- **Delivery** (local delivery job): a listing of kind `delivery` inside one city, with a deadline in hours. A **courier** (a verified user) takes it; in the database the courier is the deal's `traveller`.
+- **Admin**: a user in the `admins` table (added by hand). Admins approve couriers and handle reports.
 
 ## Product rules that must never be broken
 
 1. **Open-item rule.** A deal cannot become `handed_over` without the traveller's inspection confirmation. Never design a flow for sealed packages.
-2. **No public precise location.** Only city/airport level is public. No home addresses, flight numbers or exact times in listings.
+2. **No public precise location.** Only city/airport level (and for local delivery, the neighbourhood) is public. No home addresses, flight numbers or exact times in listings. Exact delivery addresses live in `delivery_details` and are visible only to the author, the accepted courier and admins.
 3. **No money through the app.** A listing may state a price (free, per kg or fixed); users pay each other in cash. No commission, payment, wallet or escrow features until decided in DECISIONS.md. Never build "pay for me" (a traveller paying for a sender's item).
 4. **Login and accepted safety rules** before posting or messaging (enforced in the database). Test version: Google or email login. SMS phone verification must be added before public launch.
 5. **Three languages always**: every user-facing string exists in `ar`, `de`, `en`; layouts must work right-to-left.

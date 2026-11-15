@@ -1,4 +1,4 @@
--- Take With — MOCK DATA for testing (8 test users, 50 listings).
+-- Take With — MOCK DATA for testing (8 test users, 50 trips and requests, 10 local delivery jobs).
 -- Run in Supabase: SQL Editor → New query → paste → Run. Run supabase/schema.sql first.
 -- Safe to run again: it first removes the old mock data.
 -- To remove the mock data later, run supabase/remove-mock.sql.
@@ -86,3 +86,34 @@ update public.listings set price_type = 'per_kg', price_amount = 5, currency = '
 where author_id = '00000000-0000-4000-a000-000000000002' and kind = 'trip';
 update public.listings set price_type = 'fixed', price_amount = 10, currency = 'USD'
 where author_id in ('00000000-0000-4000-a000-000000000005', '00000000-0000-4000-a000-000000000007') and kind = 'request';
+
+-- Two test users are verified couriers.
+update public.profiles set courier_status = 'approved'
+where id in ('00000000-0000-4000-a000-000000000002', '00000000-0000-4000-a000-000000000008');
+
+-- 10 local delivery jobs with private addresses (deadlines counted from now).
+with d (author, city, cc, lat, lng, pa, da, size, hrs, itype, descr, pt, amt, cur, paddr, pphone, daddr, dphone) as (values
+  ('00000000-0000-4000-a000-000000000005', 'Damascus', 'SY', 33.51, 36.291, 'Moadamiyeh', 'Darayya', 'small', 3, 'documents', 'Signed papers in an open envelope.', 'fixed', 15000, 'SYP', 'Main street, next to the bakery', '+963 900 000 101', 'Darayya, school street 4', '+963 900 000 102'),
+  ('00000000-0000-4000-a000-000000000001', 'Damascus', 'SY', 33.51, 36.291, 'Mezzeh', 'Baramkeh', 'medium', 6, 'clothes', 'Bag with two jackets from the tailor.', 'fixed', 20000, 'SYP', 'Mezzeh 86, tailor shop Abu Ali', '+963 900 000 103', 'Baramkeh, near the university gate', '+963 900 000 104'),
+  ('00000000-0000-4000-a000-000000000003', 'Damascus', 'SY', 33.51, 36.291, 'Jaramana', 'Bab Touma', 'small', 12, 'medicine_otc', 'Vitamins in the original box from the pharmacy.', 'fixed', 2, 'USD', 'Jaramana, pharmacy Al-Shifa', '+963 900 000 105', 'Bab Touma, house 12', '+963 900 000 106'),
+  ('00000000-0000-4000-a000-000000000004', 'Damascus', 'SY', 33.51, 36.291, 'Kafr Souseh', 'Midan', 'large', 24, 'other', 'A small table fan in its box, you can open it.', 'fixed', 40000, 'SYP', 'Kafr Souseh, electronics shop 7', '+963 900 000 107', 'Midan, Jazmatiyeh street', '+963 900 000 108'),
+  ('00000000-0000-4000-a000-000000000006', 'Damascus', 'SY', 33.51, 36.291, 'Dummar', 'Abu Rummaneh', 'small', 6, 'gifts', 'Box of sweets from the shop, closed by the shop.', 'free', null, null, 'Dummar project, sweets shop', '+963 900 000 109', 'Abu Rummaneh, building 3', '+963 900 000 110'),
+  ('00000000-0000-4000-a000-000000000007', 'Damascus', 'SY', 33.51, 36.291, 'Qudsaya', 'Mezzeh', 'medium', 12, 'books', 'Five school books for my son.', 'fixed', 15000, 'SYP', 'Qudsaya, bookshop at the roundabout', '+963 900 000 111', 'Mezzeh villas, house 21', '+963 900 000 112'),
+  ('00000000-0000-4000-a000-000000000002', 'Aleppo', 'SY', 36.202, 37.159, 'Aziziyeh', 'Hamdaniyeh', 'small', 6, 'documents', 'Copy of a contract, not sealed.', 'fixed', 1, 'USD', 'Aziziyeh, office 2nd floor', '+963 900 000 113', 'Hamdaniyeh, 3rd block', '+963 900 000 114'),
+  ('00000000-0000-4000-a000-000000000005', 'Homs', 'SY', 34.727, 36.723, 'Inshaat', 'Waer', 'medium', 24, 'food', 'Packed olive oil bottle, 2 litres.', 'fixed', 25000, 'SYP', 'Inshaat, grocery Al-Amal', '+963 900 000 115', 'Waer, 8th island', '+963 900 000 116'),
+  ('00000000-0000-4000-a000-000000000008', 'Latakia', 'SY', 35.519, 35.792, 'Sheikh Daher', 'Ziraa', 'small', 3, 'other', 'Phone charger, new in its box.', 'fixed', 10000, 'SYP', 'Sheikh Daher square, phone shop', '+963 900 000 117', 'Ziraa, near the stadium', '+963 900 000 118'),
+  ('00000000-0000-4000-a000-000000000003', 'Berlin', 'DE', 52.524, 13.411, 'Neukölln', 'Kreuzberg', 'small', 6, 'gifts', 'Small gift bag for a birthday.', 'fixed', 5, 'EUR', 'Sonnenallee 100, bakery', '+49 30 0000001', 'Oranienstraße 20', '+49 30 0000002')
+),
+ins as (
+  insert into public.listings (
+    author_id, kind, origin_name, origin_country, origin_lat, origin_lng, dest_name, dest_country, dest_lat, dest_lng,
+    travel_date, weight_kg, item_types, description, price_type, price_amount, currency, size, expires_at, pickup_area, dropoff_area
+  )
+  select author::uuid, 'delivery', city, cc, lat, lng, city, cc, lat, lng,
+    current_date, null, array[itype], descr, pt, amt, cur, size, now() + make_interval(hours => hrs), pa, da
+  from d
+  returning id, author_id, pickup_area, dropoff_area
+)
+insert into public.delivery_details (listing_id, pickup_address, pickup_phone, dropoff_address, dropoff_phone)
+select ins.id, d.paddr, d.pphone, d.daddr, d.dphone
+from ins join d on d.author::uuid = ins.author_id and d.pa = ins.pickup_area and d.da = ins.dropoff_area;

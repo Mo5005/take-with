@@ -35,6 +35,10 @@ The original idea covers traveller offers. A marketplace needs both sides, other
 
 Both appear in the same list/map, with a toggle. A traveller can answer a request; a sender can answer a trip.
 
+A third kind was added on 2026-11-16:
+
+- **Local delivery** — "I need item Y delivered from neighbourhood A to neighbourhood B in this city within N hours." Only verified couriers can take it. See [features/local-delivery.md](features/local-delivery.md).
+
 ## 5. Features
 
 ### MVP (version 1)

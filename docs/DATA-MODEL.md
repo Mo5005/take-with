@@ -6,7 +6,8 @@ Differences in the test version:
 - There is no `Place` table. A listing stores the city name, country code and coordinates itself; cities come from the list bundled in the app.
 - A conversation has a `starter` (the interested user) and an `owner` (the listing author).
 - Reports can target a user, a listing or a conversation.
-- No photos, no ID verification, no `disputed` status yet. Capacity of a trip is not reduced automatically.
+- No `disputed` status yet. Capacity of a trip is not reduced automatically.
+- Local delivery (kind `delivery`) adds `delivery_details`, `deal_codes`, `courier_applications`, `admins` and three photo buckets. See [features/local-delivery.md](features/local-delivery.md).
 
 ## Entities
 
